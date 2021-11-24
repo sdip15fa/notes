@@ -22,10 +22,10 @@ app.get("/get/:id", async function(req, res) {
     try {
         const id = req.params.id;
         await client.connect();
-        const database = client.db('notes');
-        const notes = database.collection('notes');
+        const database = await client.db('notes');
+        const notes = await database.collection('notes');
         const query = { id : id };
-        var note = notes.findOne(query);
+        var note = await notes.findOne(query);
         console.log(note);
     } finally {
         await client.close();
