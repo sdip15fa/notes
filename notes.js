@@ -1,34 +1,37 @@
-var MongoClient = require('mongodb').MongoClient;
-var url = `mongodb://${process.env.mongocred}@${process.env.mongourl}/`;
+const { MongoClient } = require('mongodb');
+const url = `mongodb+srv://${process.env.mongocred}@${process.env.mongourl}/`;
 var express = require("express");
 var app = express();
+const client = new MongoClient(url);
 
-app.post("/create", function(req, res) {
-    MongoClient.connect(url, function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("notes");
-        dbo.collection("notes").insertOne(req.body, function(err, res) {
-            if (err) throw err;
-            db.close();
-        })
-    })
+app.post("/create", async function(req, res) {
+    try {
+    await client.connect();
+    const database = client.db('notes');
+    const notes = database.collection('notes');
+    await notes.insertOne(req.body);
+    } finally {
+        await client.close();
+    }
     res.writeHead(200);
     res.write();
 })
 
-app.get("/get/:id", function(req, res) {
-    let id = req.params.id;
-    let query = { id : id };
-    MongoClient.connect(url, function(err, db) {
-    var dbo = db.db("notes");
-    dbo.collection("notes").find(query).toArray(function(err, result) {
-        if (err) throw err;
-        db.close();
-        res.writeHead(200, {"Content-Type": "application/json"});
-        res.write(result);
-    });
-    })
-})
+app.get("/get/:id", async function(req, res) {
+    try {
+        await client.connect();
+        const database = client.db('notes');
+        const notes = database.collection('notes');
+        const query = { id : id };
+        var note = notes.findOne(query);
+        console.log(note);
+    } finally {
+        await client.close();
+    }
+    res.writeHead(200, {"Content-Type": "application/json"});
+    res.write(note);
+});
+run().catch(console.dir);
 app.listen(4000, function(){
     console.log("Listening at port 4000");
 });
