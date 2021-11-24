@@ -17,19 +17,17 @@ app.post("/create", function(req, res) {
 })
 
 app.get("/get/:id", function(req, res) {
-    var r;
     let id = req.params.id;
     let query = { id : id };
     MongoClient.connect(url, function(err, db) {
     var dbo = db.db("notes");
     dbo.collection("notes").find(query).toArray(function(err, result) {
         if (err) throw err;
-        r = result
         db.close();
+        res.writeHead(200, {"Content-Type": "application/json"});
+        res.write(result);
     });
     })
-    res.writeHead(200, {"Content-Type": "application/json"});
-    res.write(r);
 })
 app.listen(4000, function(){
     console.log("Listening at port 4000");
