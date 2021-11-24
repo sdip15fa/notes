@@ -2,9 +2,9 @@ const { MongoClient } = require('mongodb');
 const url = `mongodb+srv://${process.env.mongocred}@${process.env.mongourl}/`;
 var express = require("express");
 var app = express();
-const client = new MongoClient(url);
 
 app.post("/create", async function(req, res) {
+    const client = new MongoClient(url);
     try {
     await client.connect();
     const database = client.db('notes');
@@ -18,6 +18,7 @@ app.post("/create", async function(req, res) {
 })
 
 app.get("/get/:id", async function(req, res) {
+    const client = new MongoClient(url);
     try {
         const id = req.params.id;
         await client.connect();
