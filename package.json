@@ -1,0 +1,15 @@
+{
+  "name": "wcyat-notes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "notes.js",
+  "scripts": {
+    "start": "notes.js"
+  },
+  "author": "wcyat",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^4.2.0"
+  }
+}
