@@ -31,7 +31,7 @@ app.get("/get/:id", async function(req, res) {
         await client.close();
     }
     res.writeHead(200, {"Content-Type": "application/json"});
-    res.write(note);
+    res.write(JSON.stringify(note));
 });
 app.listen(4000, function(){
     console.log("Listening at port 4000");
