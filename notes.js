@@ -7,8 +7,8 @@ app.post("/create", async function(req, res) {
     const client = new MongoClient(url);
     try {
     await client.connect();
-    const database = client.db('notes');
-    const notes = database.collection('notes');
+    const database = await client.db('notes');
+    const notes = await database.collection('notes');
     await notes.insertOne(req.body);
     } finally {
         await client.close();
