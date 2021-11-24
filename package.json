@@ -4,7 +4,7 @@
   "description": "",
   "main": "notes.js",
   "scripts": {
-    "start": "notes.js"
+    "start": "node notes.js"
   },
   "author": "wcyat",
   "license": "MIT",
