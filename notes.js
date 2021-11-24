@@ -19,7 +19,7 @@ app.post("/create", async function(req, res) {
 
 app.get("/get/:id", async function(req, res) {
     try {
-        const id = request.params.id;
+        const id = req.params.id;
         await client.connect();
         const database = client.db('notes');
         const notes = database.collection('notes');
