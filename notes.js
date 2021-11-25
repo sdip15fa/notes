@@ -9,6 +9,7 @@ app.post("/create", async function(req, res) {
     await client.connect();
     const database = await client.db('notes');
     const notes = await database.collection('notes');
+    await notes.deleteOne({id : req.body.id});
     await notes.insertOne(req.body);
     } finally {
         await client.close();
