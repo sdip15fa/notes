@@ -1,4 +1,4 @@
-A simple notes sharing system. <br>
+A simple notes sharing system built with mongodb, express.js, and cloudflare workers.<br>
 [https://notes.wcyat.me](https://notes.wcyat.me)
 
 # Deploy
