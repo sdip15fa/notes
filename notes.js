@@ -3,6 +3,7 @@ const body_parser = require('body-parser')
 const url = `mongodb+srv://${process.env.mongocred}@${process.env.mongourl}/`;
 const express = require("express");
 const cors = require("cors");
+const pg = require('./pg')
 var app = express();
 app.use(cors());
 app.options('*', cors());
@@ -56,8 +57,10 @@ app.post("/users/:i", body_parser.json(), async function(req,res) {
                 res.send("Username already used.");
             }
             else {
-                await users.insertOne(req.body);
-                res.send("Signup success.");
+                let o = req.body;
+                o.key = pg.generate();
+                await users.insertOne(o);
+                res.send("Signup successful.");
             }
         }
         finally {
