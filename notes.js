@@ -52,7 +52,7 @@ app.post("/users/:i", body_parser.json(), async function(req,res) {
             const users = await database.collection('users');
             console.log(await users.find({username : req.body.username}).count())
             if (await users.find({username : req.body.username}).count() > 0) {
-                res.set(406);
+                res.status(406);
                 res.send("Username already used.");
             }
             else {
