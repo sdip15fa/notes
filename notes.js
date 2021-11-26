@@ -52,10 +52,12 @@ app.post("/users/:i", body_parser.json(), async function(req,res) {
             const users = await database.collection('users');
             console.log(users.find({username : req.body.username}).count())
             if (users.find({username : req.body.username}).count() > 0) {
-                res.send(406, "Username already used.");
+                res.set(406);
+                res.send("Username already used.");
             }
             else {
-
+                await users.insertOne(req.body);
+                res.send("Signup success.");
             }
         }
         finally {
