@@ -25,11 +25,11 @@ app.post("/create", body_parser.json(), async function(req, res) {
 
 app.post("/users/:i", body_parser.json(), async function(req,res) {
     const client = new MongoClient(url);
+    await client.connect();
+    const database = await client.db('users');
+    const users = await database.collection('users');
     if (req.params.i === "signin") {
         try {
-            await client.connect();
-            const database = await client.db('users');
-            const users = await database.collection('users');
             const pair = await users.findOne({username : req.body.username});
             if (req.body.password === pair.password) {
                 const key = pair.key;
@@ -43,6 +43,16 @@ app.post("/users/:i", body_parser.json(), async function(req,res) {
             }
         } finally {
             await client.close();
+        }
+    }
+    else if (req.params.i === "signup") {
+        try {
+            if (users.find({username : req.body.username}).count > 0) {
+                res.send(406, "Username already used.");
+            }
+            else {
+                
+            }
         }
     }
 })
