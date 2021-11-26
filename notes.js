@@ -5,9 +5,8 @@ const express = require("express");
 const cors = require("cors");
 var app = express();
 app.use(cors());
-app.use(body_parser.json());
 app.options('*', cors());
-app.post("/create", async function(req, res) {
+app.post("/create", body_parser.json(), async function(req, res) {
     const client = new MongoClient(url);
     console.log(typeof req.body, `request ${JSON.stringify(req.body)}`);
     //console.log(req.body.id);
@@ -22,6 +21,29 @@ app.post("/create", async function(req, res) {
     }
     res.set("Access-Control-Allow-Origin", "*");
     res.send("ok");
+})
+
+app.post("/users/:i", body_parser.json(), async function(req,res) {
+    const client = new MongoClient(url);
+    if (req.params.i === "signin") {
+        try {
+            await client.connect();
+            const database = await client.db('users');
+            const users = await database.collection('users');
+            const pair = await users.findOne({username : req.body.username});
+            if (req.body.password === pair.password) {
+                const key = pair.key;
+                res.set("Access-Control-Allow-Origin", "*");
+                res.send(key);
+            }
+            else {
+                res.set("Access-Control-Allow-Origin", "*");
+                res.send("Unauthorized");
+            }
+        } finally {
+            await client.close();
+        }
+    }
 })
 
 app.get("/get/:id", async function(req, res) {
