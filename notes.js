@@ -37,6 +37,7 @@ app.post("/users/:i", body_parser.json(), async function(req,res) {
                 res.send(key);
             }
             else {
+                res.status(401);
                 res.set("Access-Control-Allow-Origin", "*");
                 res.send("Unauthorized");
             }
