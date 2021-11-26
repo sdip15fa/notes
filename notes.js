@@ -51,8 +51,11 @@ app.post("/users/:i", body_parser.json(), async function(req,res) {
                 res.send(406, "Username already used.");
             }
             else {
-                
+
             }
+        }
+        finally {
+            client.close();
         }
     }
 })
