@@ -55,14 +55,60 @@ app.post("/users/:i", body_parser.json(), async function(req,res) {
             }
             else {
                 let o = req.body;
-                o.key = pg.generate();
+                o.key = await pg.generate();
                 await users.insertOne(o);
-                res.send("Signup successful.");
+                res.send(o.key);
             }
         }
         finally {
-            client.close();
+            await client.close();
         }
+    }
+})
+
+app.get("/notes/users/:user", async function (req, res) {
+    const client = new MongoClient(url);
+    try {
+        const key = req.params.user;
+        await client.connect();
+        const database = await client.db('users');
+        const notes = await database.collection('notes');
+        if (await notes.find({key : key}).count() > 0) {
+            let o = await notes.findOne({key : key});
+            delete o._id;
+            delete o.key;
+            res.send(o);
+        }
+        else {
+            res.status(404);
+            res.send("Not found.");
+        }
+    }
+    finally {
+        await client.close();
+    }
+})
+
+app.post("/notes/users/:user", body_parser.json(), async function (req, res) {
+    const key = req.params.user;
+    const client = new MongoClient(url);
+    try {
+        await client.connect();
+        const database = await client.db('users');
+        const notes = await database.collection('notes');
+        const users = await database.collection('users');
+        if (await users.find({key : key}).count() > 0) {
+            await notes.deleteOne({key : key});
+            await notes.insertOne(req.body);
+            res.send("ok");
+        }
+        else {
+            res.status(404);
+            res.send("User not found.");
+        }
+    }
+    finally {
+        client.close();
     }
 })
 
