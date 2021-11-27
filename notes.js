@@ -20,7 +20,6 @@ app.post("/create", body_parser.json(), async function(req, res) {
     } finally {
         await client.close();
     }
-    res.set("Access-Control-Allow-Origin", "*");
     res.send("ok");
 })
 
@@ -34,12 +33,10 @@ app.post("/users/:i", body_parser.json(), async function(req,res) {
             const pair = await users.findOne({username : req.body.username});
             if (req.body.password === pair.password) {
                 const key = pair.key;
-                res.set("Access-Control-Allow-Origin", "*");
                 res.send(key);
             }
             else {
                 res.status(401);
-                res.set("Access-Control-Allow-Origin", "*");
                 res.send("Unauthorized");
             }
         } finally {
