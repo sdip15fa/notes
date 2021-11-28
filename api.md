@@ -36,7 +36,7 @@ the parameters for post requests are sent as request body.
 1. JSON {_id : "this is not important and can be ignored", id : "note id", text : "note text"}
 2. JSON {1 : "the users' first note", 2 : "users' second note", 3 : "users' third note" ...}
 3. TEXT "ok"
-4. TEXT user key / http 406 + "Username already used."
+4. TEXT user key / http 409 + "Username already used."
 5. TEXT user key / http 401 + "Username / password incorrect."
 6. TEXT "ok" / http 404 + "User not found."
 
