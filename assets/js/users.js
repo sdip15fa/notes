@@ -1,6 +1,6 @@
-//if (localStorage.key && localStorage.username) {
-//    window.location.replace("../?signedin=true");
-//}
+if (localStorage.key && localStorage.username) {
+    window.location.replace("../?signedin=true");
+}
 
 function signup () {
     if (!document.getElementById('username').value || !document.getElementById('password').value) {
