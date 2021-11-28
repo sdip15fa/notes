@@ -21,18 +21,18 @@
         <h3 class="sub-heading text-center">Notes</h3>
           <br>
           <div class="field">
-            <input type="text" id="username" name="username" class="input" placeholder=" " />
+            <input type="text" onchange="check('username')" id="username" name="username" class="input" placeholder=" " />
             <label for="username" class="label">username</label>
           </div>
           <br>
           <div class="field">
-            <input type="password" id="password" name="password" class="input" placeholder=" " />
+            <input type="password" onchange="check('password')" id="password" name="password" class="input" placeholder=" " />
             <label for="password" class="label">password</label>
           </div>
           <p class="description-text"><span style="color: red;" id="warning"></span></p>
           <div class="form-action">
-            <button onclick="signup()" onchange="check('signup')" id="signup" class="btn primary">Sign up</button>
-            <button onclick="signin()" onchange="check('signin')" id="signin" class="btn primary">Sign in</button>
+            <button onclick="signup()" id="signup" class="btn primary">Sign up</button>
+            <button onclick="signin()" id="signin" class="btn primary">Sign in</button>
           </div>
       </div>
     </div>
