@@ -24,7 +24,7 @@ function signin () {
           localStorage.key = await res.data;
           window.location.replace("../?signin=successful");
       })
-      .error(function (error) {
+      .catch(function (error) {
           document.getElementById('warning').innerHTML = error.response.data;
       })
 }
