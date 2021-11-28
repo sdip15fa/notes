@@ -12,7 +12,12 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/gh/sdip15fa/static/js/init.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js" integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
+      integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
   </head>
 
   <body>
@@ -20,21 +25,41 @@
       <div class="form-wrapper">
         <h1 class="heading text-center">Signin / Signup</h1>
         <h3 class="sub-heading text-center">Notes</h3>
-          <br>
-          <div class="field">
-            <input type="text" onchange="check('username')" id="username" name="username" class="input" placeholder=" " />
-            <label for="username" class="label">username</label>
-          </div>
-          <br>
-          <div class="field">
-            <input type="password" onchange="check('password')" id="password" name="password" class="input" placeholder=" " />
-            <label for="password" class="label">password</label>
-          </div>
-          <p class="description-text"><span style="color: red;" id="warning"></span></p>
-          <div class="form-action">
-            <button onclick="signup()" id="signup" class="btn primary">Sign up</button>
-            <button onclick="signin()" id="signin" class="btn primary">Sign in</button>
-          </div>
+        <br />
+        <div class="field">
+          <input
+            type="text"
+            onchange="check('username')"
+            id="username"
+            name="username"
+            class="input"
+            placeholder=" "
+          />
+          <label for="username" class="label">username</label>
+        </div>
+        <br />
+        <div class="field">
+          <input
+            type="password"
+            onchange="check('password')"
+            id="password"
+            name="password"
+            class="input"
+            placeholder=" "
+          />
+          <label for="password" class="label">password</label>
+        </div>
+        <p class="description-text">
+          <span style="color: red" id="warning"></span>
+        </p>
+        <div class="form-action">
+          <button onclick="signup()" id="signup" class="btn primary">
+            Sign up
+          </button>
+          <button onclick="signin()" id="signin" class="btn primary">
+            Sign in
+          </button>
+        </div>
       </div>
     </div>
     <script src="../assets/js/users.js"></script>
