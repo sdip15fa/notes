@@ -7,7 +7,7 @@ function link() {
   document.getElementById('root').appendChild(link);
 }
 
-function createnote (text) {
+function newnote (text) {
   document.getElementById('root').appendChild(`<div class="form-group">
   <textarea class="form-control" rows="5" name="note">${text}</textarea>
 </div>`)
@@ -77,7 +77,7 @@ if (localStorage.username && localStorage.key) {
   axios.get(`https://notes-server.wcyat.me/notes/users/${localStorage.key}`)
     .then(function (res) {
       for (i in res.data) {
-        createnote(res.data[i]);
+        newnote(res.data[i]);
       }
     })
 }
