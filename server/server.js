@@ -31,7 +31,7 @@ app.post("/users/:i", body_parser.json(), async function(req,res) {
             const database = await client.db('users');
             const users = await database.collection('users');
             const pair = await users.findOne({username : req.body.username});
-            if (pair.password != null && req.body.password === await pair.password) {
+            if (pair && req.body.password === await pair.password) {
               const key = pair.key;
               res.send(key);
             }
