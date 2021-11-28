@@ -12,11 +12,11 @@ app.post("/create", body_parser.json(), async function(req, res) {
     console.log(typeof req.body, `request ${JSON.stringify(req.body)}`);
     //console.log(req.body.id);
     try {
-    await client.connect();
-    const database = await client.db('notes');
-    const notes = await database.collection('notes');
-    await notes.deleteOne({id : req.body.id});
-    await notes.insertOne(req.body);
+        await client.connect();
+        const database = await client.db('notes');
+        const notes = await database.collection('notes');
+        await notes.deleteOne({id : req.body.id});
+        await notes.insertOne(req.body);
     } finally {
         await client.close();
     }
@@ -37,7 +37,7 @@ app.post("/users/:i", body_parser.json(), async function(req,res) {
             }
             else {
                 res.status(401);
-                res.send("Unauthorized");
+                res.send("Username / password incorrect.");
             }
         } finally {
             await client.close();
@@ -108,7 +108,7 @@ app.post("/notes/users/:user", body_parser.json(), async function (req, res) {
         }
     }
     finally {
-        client.close();
+        await client.close();
     }
 })
 
