@@ -19,7 +19,7 @@ function signup () {
 }
 
 function signin () {
-    axios.post("https://notes-server.wcyat.me/users/signin", {username : username, password : password})
+    axios.post("https://notes-server.wcyat.me/users/signin", {username : document.getElementById('username').value, password : document.getElementById('password').value})
       .then(async function (res) {
           localStorage.key = await res.data;
           window.location.replace("../?signin=successful");
