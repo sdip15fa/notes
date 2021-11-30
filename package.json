@@ -2,9 +2,9 @@
   "name": "wcyat-notes",
   "version": "1.0.1",
   "description": "",
-  "main": "notes.js",
+  "main": "server/server.js",
   "scripts": {
-    "start": "node notes.js"
+    "start": "node server/server.js"
   },
   "author": "wcyat",
   "license": "MIT",

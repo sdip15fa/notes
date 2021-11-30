@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign in / Sign up</title>
+    <link rel="stylesheet" href="normalize.css" />
+    <link rel="stylesheet" href="additional.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/gh/sdip15fa/static/js/init.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
+      integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+
+  <body>
+    <div class="content-body">
+      <div class="form-wrapper">
+        <h1 class="heading text-center">Signin / Signup</h1>
+        <h3 class="sub-heading text-center">Notes</h3>
+        <br />
+        <div class="field">
+          <input
+            type="text"
+            onchange="check('username')"
+            id="username"
+            name="username"
+            class="input"
+            placeholder=" "
+          />
+          <label for="username" class="label">username</label>
+        </div>
+        <br />
+        <div class="field">
+          <input
+            type="password"
+            onchange="check('password')"
+            id="password"
+            name="password"
+            class="input"
+            placeholder=" "
+          />
+          <label for="password" class="label">password</label>
+        </div>
+        <p class="description-text">
+          <span style="color: red" id="warning"></span>
+        </p>
+        <div class="form-action">
+          <button onclick="signup()" id="signup" class="btn primary">
+            Sign up
+          </button>
+          <button onclick="signin()" id="signin" class="btn primary">
+            Sign in
+          </button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/js/users.js"></script>
+  </body>
+</html>
+<!--
+
+https://github.com/mazipan/login-page-css
+
+MIT License
+
+Copyright (c) 2020 Irfan Maulana
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+-->
