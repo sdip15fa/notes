@@ -8,9 +8,11 @@ function link() {
 }
 
 function newnote (text) {
-  document.getElementById('root').appendChild(`<div class="form-group">
+  let div = document.createElement('div');
+  div.innerHTML = `<div class="form-group">
   <textarea class="form-control" rows="5" name="note">${text}</textarea>
-</div>`)
+</div>`;
+  document.getElementById('root').appendChild(div);
 }
 
 function getvar(variable) {
@@ -43,7 +45,7 @@ async function init () {
     return;
   }
   link();
-  axios.get(`https://notes-server.wcyat.me/get/${id}`).then(function (res) {
+  await axios.get(`https://notes-server.wcyat.me/get/${id}`).then(function (res) {
     document.getElementById('note').value = res.data.text;
   })
 }
