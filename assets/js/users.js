@@ -18,7 +18,7 @@ function signup () {
     })
     .then(async function (res) {
       localStorage.username = document.getElementById('username').value
-      localStorage.key = await res.data
+      localStorage.k = await res.data
       window.location.replace('../?signup=successful')
     })
     .catch(function (error) {
