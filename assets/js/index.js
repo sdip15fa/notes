@@ -99,8 +99,7 @@ else if (getvar("signin") === "successful") {
   alertmessage("alert alert-success", `Successfully signed in as ${localStorage.username}.`);
 }
 if (localStorage.username && localStorage.k) {
-  document.getElementById('note').id = "1";
-  document.getElementById('1').onchange = "usercreate('1')";
+  document.getElementById('note').remove();
   let btn = document.createElement('div');
   btn.className = "delta";
   btn.id = "btn";
