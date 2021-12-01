@@ -1,5 +1,5 @@
 let id = localStorage.id
-
+let usernotes
 function link () {
   const link = document.createElement('p')
   link.id = 'link'
@@ -10,9 +10,20 @@ function link () {
 }
 
 function newnote (text) {
-  document.getElementById('root').appendChild(`<div class="form-group">
-  <textarea class="form-control" rows="5" name="note">${text}</textarea>
-</div>`)
+  let id = '1'
+  for (id; true; id++) {
+    if (!document.getElementById(id)) {
+      id++
+      break
+    }
+  }
+  const div = document.createElement('div')
+  div.innerHTML = `<div class="form-group">
+  <textarea id="${id}" class="form-control" onchange="usercreate(${id})" rows="5" name="note">${text}</textarea>
+</div>`
+  document
+    .getElementById('root')
+    .insertBefore(div, document.getElementById('btn'))
 }
 
 function getvar (variable) {
@@ -25,6 +36,26 @@ function getvar (variable) {
     }
   }
   return false
+}
+
+function usercreate (id) {
+  if (!usernotes) {
+    usernotes = {
+      key: localStorage.k
+    }
+  }
+  usernotes[id] = document.getElementById(id).value
+  axios
+    .post(
+      `https://notes-server.wcyat.me/notes/users/${localStorage.k}`,
+      usernotes
+    )
+    .then(function (res) {
+      console.log(res.data)
+    })
+    .catch(function () {
+      alertmessage('404 not found')
+    })
 }
 
 function alertmessage (c, text) {
@@ -45,9 +76,11 @@ async function init () {
     return
   }
   link()
-  axios.get(`https://notes-server.wcyat.me/get/${id}`).then(function (res) {
-    document.getElementById('note').value = res.data.text
-  })
+  await axios
+    .get(`https://notes-server.wcyat.me/get/${id}`)
+    .then(function (res) {
+      document.getElementById('note').value = res.data.text
+    })
 }
 
 function createnote (text) {
@@ -83,13 +116,22 @@ if (getvar('signedin') === 'true') {
     `Successfully signed in as ${localStorage.username}.`
   )
 }
-if (localStorage.username && localStorage.key) {
+if (localStorage.username && localStorage.k) {
+  document.getElementById('note').remove()
+  const btn = document.createElement('div')
+  btn.className = 'delta'
+  btn.id = 'btn'
+  btn.innerHTML =
+    "<button class=\"btn btn-primary\" onclick=newnote('')>Create</button>"
+  document.getElementById('root').appendChild(btn)
   axios
-    .get(`https://notes-server.wcyat.me/notes/users/${localStorage.key}`)
+    .get(`https://notes-server.wcyat.me/notes/users/${localStorage.k}`)
     .then(function (res) {
       for (i in res.data) {
         newnote(res.data[i])
       }
+      usernotes = res.data
+      usernotes.key = localStorage.k
     })
 } else {
   init()
