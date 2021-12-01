@@ -1,4 +1,4 @@
-if (localStorage.key && localStorage.username) {
+if (localStorage.k && localStorage.username) {
   window.location.replace('../?signedin=true')
 }
 
