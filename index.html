@@ -33,13 +33,18 @@
     ></script>
   </head>
   <body>
+    <header>
+      <a href="users/"><button style="margin-top: 10px; margin-right: 10px;" class="btn btn-secondary float-right">Sign in / Sign up</button></a>
+    </header>
+    <br><br><br>
+    <h1 style="text-align: center;">Notes</h1>
     <div
       id="alert"
       style="margin-left: 5%; margin-right: 5%; margin-top: 20px"
       class=""
       role="alert"
     ></div>
-    <section id="root" style="margin-left: 50px; margin-right: 20%">
+    <div id="root" style="margin-left: 50px; margin-right:40%">
       <div class="form-group">
         <textarea
           class="form-control"
@@ -48,7 +53,7 @@
           onchange="createnote(document.getElementById('note').value)"
         ></textarea>
       </div>
-    </section>
+    </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.min.js"
       integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA=="
