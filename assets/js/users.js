@@ -33,7 +33,7 @@ function signin () {
       password: document.getElementById('password').value
     })
     .then(async function (res) {
-      localStorage.key = await res.data
+      localStorage.k = await res.data
       localStorage.username = document.getElementById('username').value
       window.location.replace('../?signin=successful')
     })

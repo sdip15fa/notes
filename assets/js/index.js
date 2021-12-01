@@ -1,5 +1,5 @@
 let id = localStorage.id;
-
+let usernotes;
 function link() {
   let link = document.createElement('p');
   link.id = "link";
@@ -8,11 +8,18 @@ function link() {
 }
 
 function newnote (text) {
+  let id = "1";
+  for (id; true; id++) {
+    if (!document.getElementById(id)) {
+      id++;
+      break;
+    }
+  }
   let div = document.createElement('div');
   div.innerHTML = `<div class="form-group">
-  <textarea class="form-control" rows="5" name="note">${text}</textarea>
+  <textarea id="${id}" class="form-control" onchange="usercreate(${id})" rows="5" name="note">${text}</textarea>
 </div>`;
-  document.getElementById('root').appendChild(div);
+  document.getElementById('root').insertBefore(div, document.getElementById("btn"));
 }
 
 function getvar(variable) {
@@ -25,6 +32,22 @@ function getvar(variable) {
   }
 }
   return false;
+}
+
+function usercreate(id) {
+  if (!usernotes) {
+    usernotes = {
+      key : localStorage.k
+    }
+  }
+  usernotes[id] = document.getElementById(id).value;
+  axios.post(`https://notes-server.wcyat.me/notes/users/${localStorage.k}`, usernotes)
+    .then (function (res) {
+      console.log(res.data);
+    })
+    .catch (function () {
+      alertmessage("404 not found");
+    })
 }
 
 function alertmessage (c, text) {
@@ -75,12 +98,21 @@ else if (getvar("signup") === "successful") {
 else if (getvar("signin") === "successful") {
   alertmessage("alert alert-success", `Successfully signed in as ${localStorage.username}.`);
 }
-if (localStorage.username && localStorage.key) {
-  axios.get(`https://notes-server.wcyat.me/notes/users/${localStorage.key}`)
+if (localStorage.username && localStorage.k) {
+  document.getElementById('note').id = "1";
+  document.getElementById('1').onchange = "usercreate('1')";
+  let btn = document.createElement('div');
+  btn.className = "delta";
+  btn.id = "btn";
+  btn.innerHTML = `<button class="btn btn-primary" onclick=newnote('')>Create</button>`
+  document.getElementById('root').appendChild(btn);
+  axios.get(`https://notes-server.wcyat.me/notes/users/${localStorage.k}`)
     .then(function (res) {
       for (i in res.data) {
         newnote(res.data[i]);
       }
+      usernotes = res.data;
+      usernotes.key = localStorage.k;
     })
 }
 else {
