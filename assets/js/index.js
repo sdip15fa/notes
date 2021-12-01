@@ -13,7 +13,6 @@ function newnote (text) {
   let id = '1'
   for (id; true; id++) {
     if (!document.getElementById(id)) {
-      id++
       break
     }
   }
