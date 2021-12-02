@@ -3,19 +3,19 @@ if (localStorage.k && localStorage.username) {
   window.location.replace('../?signedin=true')
 }
 
-function signup () {
+function signup() {
   if (
-    !document.getElementById('username').value ||
-    !document.getElementById('password').value
+    !document.getElementById("username").value ||
+    !document.getElementById("password").value
   ) {
-    document.getElementById('warning').innerHTML =
-      'Username / password cannot be empty.'
-    return
+    document.getElementById("warning").innerHTML =
+      "Username / password cannot be empty.";
+    return;
   }
   axios
-    .post('https://notes-server.wcyat.me/users/signup', {
-      username: document.getElementById('username').value,
-      password: document.getElementById('password').value
+    .post("https://notes-server.wcyat.me/users/signup", {
+      username: document.getElementById("username").value,
+      password: document.getElementById("password").value,
     })
     .then(async function (res) {
       localStorage.username = document.getElementById('username').value
@@ -24,15 +24,15 @@ function signup () {
       window.location.replace('../?signup=successful')
     })
     .catch(function (error) {
-      document.getElementById('warning').innerHTML = error.response.data
-    })
+      document.getElementById("warning").innerHTML = error.response.data;
+    });
 }
 
-function signin () {
+function signin() {
   axios
-    .post('https://notes-server.wcyat.me/users/signin', {
-      username: document.getElementById('username').value,
-      password: document.getElementById('password').value
+    .post("https://notes-server.wcyat.me/users/signin", {
+      username: document.getElementById("username").value,
+      password: document.getElementById("password").value,
     })
     .then(async function (res) {
       localStorage.k = await res.data
@@ -41,15 +41,15 @@ function signin () {
       window.location.replace('../?signin=successful')
     })
     .catch(function (error) {
-      document.getElementById('warning').innerHTML = error.response.data
-    })
+      document.getElementById("warning").innerHTML = error.response.data;
+    });
 }
 
-function check (id) {
+function check(id) {
   if (!document.getElementById(id).value) {
-    document.getElementById('warning').innerHTML =
-      'Username / password cannot be empty.'
+    document.getElementById("warning").innerHTML =
+      "Username / password cannot be empty.";
   } else {
-    document.getElementById('warning').innerHTML = ''
+    document.getElementById("warning").innerHTML = "";
   }
 }
