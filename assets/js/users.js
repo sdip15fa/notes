@@ -1,6 +1,8 @@
 if (localStorage.k && localStorage.username) {
-  if (localStorage.alerted) { delete localStorage.alerted };
-  window.location.replace('../?signedin=true')
+  if (localStorage.alerted) {
+    delete localStorage.alerted;
+  }
+  window.location.replace("../?signedin=true");
 }
 
 function signup() {
@@ -18,10 +20,12 @@ function signup() {
       password: document.getElementById("password").value,
     })
     .then(async function (res) {
-      localStorage.username = document.getElementById('username').value
-      localStorage.k = await res.data
-      if (localStorage.alerted) { delete localStorage.alerted };
-      window.location.replace('../?signup=successful')
+      localStorage.username = document.getElementById("username").value;
+      localStorage.k = await res.data;
+      if (localStorage.alerted) {
+        delete localStorage.alerted;
+      }
+      window.location.replace("../?signup=successful");
     })
     .catch(function (error) {
       document.getElementById("warning").innerHTML = error.response.data;
@@ -35,10 +39,12 @@ function signin() {
       password: document.getElementById("password").value,
     })
     .then(async function (res) {
-      localStorage.k = await res.data
-      localStorage.username = document.getElementById('username').value
-      if (localStorage.alerted) { delete localStorage.alerted };
-      window.location.replace('../?signin=successful')
+      localStorage.k = await res.data;
+      localStorage.username = document.getElementById("username").value;
+      if (localStorage.alerted) {
+        delete localStorage.alerted;
+      }
+      window.location.replace("../?signin=successful");
     })
     .catch(function (error) {
       document.getElementById("warning").innerHTML = error.response.data;
