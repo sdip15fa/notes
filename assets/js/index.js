@@ -1,5 +1,9 @@
 let id = localStorage.id
 let usernotes
+let alerthtml = document.getElementById('alert');
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 function link () {
   const link = document.createElement('p')
   link.id = 'link'
@@ -7,6 +11,16 @@ function link () {
     window.location.href.split('?')[0]
   }?id=${id}">${window.location.href.split('?')[0]}?id=${id}</a>`
   document.getElementById('root').appendChild(link)
+}
+
+async function alertmessage (c, text) {
+  let a = alerthtml;
+  a.innerHTML = text
+  a.className = c
+  document.body.insertBefore(a, document.querySelector('h1').nextSibling)
+  await sleep(5000);
+  document.getElementById('alert').remove();
+  localStorage.alerted = true;
 }
 
 function newnote (text) {
@@ -23,6 +37,13 @@ function newnote (text) {
   document
     .getElementById('root')
     .insertBefore(div, document.getElementById('btn'))
+}
+
+function logout () {
+  delete localStorage.k;
+  delete localStorage.username;
+  if (localStorage.alerted) { delete localStorage.alerted };
+  window.location.reload(window.location.href.split('?')[0] + "?logout=successful")
 }
 
 function getvar (variable) {
@@ -55,11 +76,6 @@ function usercreate (id) {
     .catch(function () {
       alertmessage('404 not found')
     })
-}
-
-function alertmessage (c, text) {
-  document.getElementById('alert').innerHTML = text
-  document.getElementById('alert').className = c
 }
 
 async function init () {
@@ -99,23 +115,20 @@ function createnote (text) {
     link()
   }
 }
-if (getvar('signedin') === 'true') {
-  alertmessage(
-    'alert alert-warning',
-    `You are already signed in as ${localStorage.username}.`
-  )
-} else if (getvar('signup') === 'successful') {
-  alertmessage(
-    'alert alert-success',
-    `Successfully signed up as ${localStorage.username}.`
-  )
-} else if (getvar('signin') === 'successful') {
-  alertmessage(
-    'alert alert-success',
-    `Successfully signed in as ${localStorage.username}.`
-  )
+if (getvar('signedin') || getvar('signup') || getvar('signin') || getvar('logout')) {
+  if (localStorage.alerted) {
+    window.location.replace(window.location.href.split('?')[0]);
+  }
+  else {alertmessage(getvar('signedin') ? 'alert alert-warning' : 'alert alert success', getvar('signedin') ? `You are already signed in as ${localStorage.username}.` : getvar('logout') ? `Successfully logged out.` : `Successfully signed ${getvar('signup') ? 'up' : 'in'} as ${localStorage.username}.`)}
 }
 if (localStorage.username && localStorage.k) {
+  document.getElementById('header').innerHTML = `<button
+  style="margin-top: 10px; margin-right: 10px"
+  class="btn btn-secondary float-right"
+  onclick="logout()"
+>
+  Log out
+</button>`;
   document.getElementById('note').remove()
   const btn = document.createElement('div')
   btn.className = 'delta'

@@ -1,4 +1,5 @@
 if (localStorage.k && localStorage.username) {
+  if (localStorage.alerted) { delete localStorage.alerted };
   window.location.replace('../?signedin=true')
 }
 
@@ -19,6 +20,7 @@ function signup () {
     .then(async function (res) {
       localStorage.username = document.getElementById('username').value
       localStorage.k = await res.data
+      if (localStorage.alerted) { delete localStorage.alerted };
       window.location.replace('../?signup=successful')
     })
     .catch(function (error) {
@@ -35,6 +37,7 @@ function signin () {
     .then(async function (res) {
       localStorage.k = await res.data
       localStorage.username = document.getElementById('username').value
+      if (localStorage.alerted) { delete localStorage.alerted };
       window.location.replace('../?signin=successful')
     })
     .catch(function (error) {
