@@ -43,7 +43,7 @@ function logout () {
   delete localStorage.k;
   delete localStorage.username;
   if (localStorage.alerted) { delete localStorage.alerted };
-  window.location.reload(window.location.href.split('?')[0] + "?logout=successful")
+  window.location.replace(`${window.location.href.split('?')[0]}?logout=successful`)
 }
 
 function getvar (variable) {
