@@ -119,7 +119,7 @@ if (getvar('signedin') || getvar('signup') || getvar('signin') || getvar('logout
   if (localStorage.alerted) {
     window.location.replace(window.location.href.split('?')[0]);
   }
-  else {alertmessage(getvar('signedin') ? 'alert alert-warning' : 'alert alert success', getvar('signedin') ? `You are already signed in as ${localStorage.username}.` : getvar('logout') ? `Successfully logged out.` : `Successfully signed ${getvar('signup') ? 'up' : 'in'} as ${localStorage.username}.`)}
+  else {alertmessage(getvar('signedin') ? 'alert alert-warning' : 'alert alert-success', getvar('signedin') ? `You are already signed in as ${localStorage.username}.` : getvar('logout') ? `Successfully logged out.` : `Successfully signed ${getvar('signup') ? 'up' : 'in'} as ${localStorage.username}.`)}
 }
 if (localStorage.username && localStorage.k) {
   document.getElementById('header').innerHTML = `<button
