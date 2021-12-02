@@ -27,7 +27,7 @@ function newnote(text) {
   let id = "1";
   for (id; true; id++) {
     if (!document.getElementById(id)) {
-      break
+      break;
     }
   }
   const div = document.createElement("div");
