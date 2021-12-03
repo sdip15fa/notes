@@ -1,3 +1,4 @@
+let ready;
 let id = localStorage.id;
 let usernotes;
 const alerthtml = document.getElementById("alert");
@@ -26,17 +27,22 @@ async function alertmessage(c, text) {
 function newnote(text) {
   let id = "1";
   for (id; true; id++) {
-    if (!document.getElementById(id)) {
+    if (!tinymce.get(id)) {
       break;
     }
   }
   const div = document.createElement("div");
-  div.innerHTML = `<div class="form-group">
-  <textarea id="${id}" class="form-control" onchange="usercreate(${id})" rows="5" name="note">${text}</textarea>
+  div.innerHTML = `<textarea id="${id}" onchange="usercreate(${id})" rows="10" name="note">${text}</textarea>
 </div>`;
   document
     .getElementById("root")
     .insertBefore(div, document.getElementById("btn"));
+  tinymce.init({
+    selector:'textarea',
+    init_instance_callback: function(editor) {
+      editor.on('Paste Change input Undo Redo', () => {usercreate(editor.id)});
+    }
+  });
 }
 
 function logout() {
@@ -68,7 +74,7 @@ function usercreate(id) {
       key: localStorage.k,
     };
   }
-  usernotes[id] = document.getElementById(id).value;
+  usernotes[id] = tinymce.get(id).getContent();
   axios
     .post(
       `https://notes-server.wcyat.me/notes/users/${localStorage.k}`,
@@ -98,8 +104,9 @@ async function init() {
   await axios
     .get(`https://notes-server.wcyat.me/get/${id}`)
     .then(function (res) {
-      document.getElementById("note").value = res.data.text;
+      tinymce.get('note').setContent(res.data.text);
     });
+  ready = true;
 }
 
 function createnote(text) {
@@ -143,7 +150,7 @@ if (
 if (localStorage.username && localStorage.k) {
   document.getElementById("header").innerHTML = `<button
   style="margin-top: 10px; margin-right: 10px"
-  class="btn btn-secondary float-right"
+  class="btn btn-secondary float-end"
   onclick="logout()"
 >
   Log out
