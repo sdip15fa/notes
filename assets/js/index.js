@@ -92,18 +92,20 @@ async function init() {
   if (await getvar("id")) {
     id = await getvar("id");
     localStorage.id = id;
+  }
+  if (id === undefined) {
+    await axios.get("https://notes.wcyat.me/idgenerator").then(function (res) {
+      id = res.data;
+      localStorage.id = id;
+    });
+  }
+  else { 
     await axios
     .get(`https://notes-server.wcyat.me/get/${id}`)
     .then(function (res) {
       tinymce.get('note').setContent(res.data.text);
     });
     link();
-  }
-  if (id === undefined) {
-    axios.get("https://notes.wcyat.me/idgenerator").then(function (res) {
-      id = res.data;
-      localStorage.id = id;
-    });
   }
   ready = true;
 }
