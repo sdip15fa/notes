@@ -33,7 +33,10 @@ async function newnote(text) {
   }
   if (i > 2) {
     window.location.href += "#";
-    await alertmessage('alert alert-danger', "Sorry, you can only create two notes due to a limitation from tinymce.");
+    await alertmessage(
+      "alert alert-danger",
+      "Sorry, you can only create two notes due to a limitation from tinymce."
+    );
     window.location.href = window.location.href.replace("#", "");
     return;
   }
@@ -44,10 +47,12 @@ async function newnote(text) {
     .getElementById("root")
     .insertBefore(div, document.getElementById("btn"));
   tinymce.init({
-    selector:'textarea',
-    init_instance_callback: function(editor) {
-      editor.on('Paste Change input Undo Redo', () => {usercreate(editor.id)});
-    }
+    selector: "textarea",
+    init_instance_callback: function (editor) {
+      editor.on("Paste Change input Undo Redo", () => {
+        usercreate(editor.id);
+      });
+    },
   });
 }
 
@@ -104,13 +109,12 @@ async function init() {
       id = res.data;
       localStorage.id = id;
     });
-  }
-  else { 
+  } else {
     await axios
-    .get(`https://notes-server.wcyat.me/get/${id}`)
-    .then(function (res) {
-      tinymce.get('note').setContent(res.data.text);
-    });
+      .get(`https://notes-server.wcyat.me/get/${id}`)
+      .then(function (res) {
+        tinymce.get("note").setContent(res.data.text);
+      });
     link();
   }
   ready = true;
