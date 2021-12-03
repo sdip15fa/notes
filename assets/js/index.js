@@ -1,4 +1,4 @@
-let ready;
+let ready = false;
 let id = localStorage.id;
 let usernotes;
 const alerthtml = document.getElementById("alert");
@@ -32,7 +32,7 @@ function newnote(text) {
     }
   }
   const div = document.createElement("div");
-  div.innerHTML = `<textarea id="${id}" onchange="usercreate(${id})" rows="10" name="note">${text}</textarea>
+  div.innerHTML = `<br><textarea id="${id}" onchange="usercreate(${id})" rows="10" name="note">${text}</textarea>
 </div>`;
   document
     .getElementById("root")
@@ -92,20 +92,19 @@ async function init() {
   if (await getvar("id")) {
     id = await getvar("id");
     localStorage.id = id;
+    await axios
+    .get(`https://notes-server.wcyat.me/get/${id}`)
+    .then(function (res) {
+      tinymce.get('note').setContent(res.data.text);
+    });
+    link();
   }
   if (id === undefined) {
     axios.get("https://notes.wcyat.me/idgenerator").then(function (res) {
       id = res.data;
       localStorage.id = id;
     });
-    return;
   }
-  link();
-  await axios
-    .get(`https://notes-server.wcyat.me/get/${id}`)
-    .then(function (res) {
-      tinymce.get('note').setContent(res.data.text);
-    });
   ready = true;
 }
 
