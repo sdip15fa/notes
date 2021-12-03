@@ -24,15 +24,21 @@ async function alertmessage(c, text) {
   localStorage.alerted = true;
 }
 
-function newnote(text) {
-  let id = "1";
-  for (id; true; id++) {
-    if (!tinymce.get(id)) {
+async function newnote(text) {
+  let i = 1;
+  for (i; true; i++) {
+    if (tinymce.get(`${i}`) === null) {
       break;
     }
   }
+  if (i > 2) {
+    window.location.href += "#";
+    await alertmessage('alert alert-danger', "Sorry, you can only create two notes due to a limitation from tinymce.");
+    window.location.href = window.location.href.replace("#", "");
+    return;
+  }
   const div = document.createElement("div");
-  div.innerHTML = `<br><textarea id="${id}" onchange="usercreate(${id})" rows="10" name="note">${text}</textarea>
+  div.innerHTML = `<br><textarea id="${i}" rows="10" name="note">${text}</textarea>
 </div>`;
   document
     .getElementById("root")
