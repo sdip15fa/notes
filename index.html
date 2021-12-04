@@ -56,10 +56,7 @@
     ></div>
     <div id="root" style="margin-left: 50px; margin-right: 40%">
       <div class="form-group">
-        <textarea
-          rows="10"
-          id="note"
-        ></textarea>
+        <textarea rows="10" id="note"></textarea>
       </div>
     </div>
     <script
@@ -72,12 +69,19 @@
       let inittimeout;
       document.body.onload = function () {
         tinymce.init({
-        selector:'#note',
-        init_instance_callback: function(editor) {
-          editor.on('Paste Change input Undo Redo', () => {if (ready) {clearTimeout(inittimeout); inittimeout = setTimeout(() => {createnote(editor.getContent())}, 500)}});
-        }
-      });
-    }
+          selector: "#note",
+          init_instance_callback: function (editor) {
+            editor.on("Paste Change input Undo Redo", () => {
+              if (ready) {
+                clearTimeout(inittimeout);
+                inittimeout = setTimeout(() => {
+                  createnote(editor.getContent());
+                }, 500);
+              }
+            });
+          },
+        });
+      };
     </script>
     <script src="assets/js/index.js"></script>
   </body>
