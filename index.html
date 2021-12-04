@@ -70,12 +70,19 @@
       let inittimeout;
       document.body.onload = function () {
         tinymce.init({
-        selector:'#note',
-        init_instance_callback: function(editor) {
-          editor.on('Paste Change input Undo Redo', () => {if (ready) {clearTimeout(inittimeout); inittimeout = setTimeout(() => {createnote(editor.getContent())}, 500)}});
-        }
-      });
-    }
+          selector: "#note",
+          init_instance_callback: function (editor) {
+            editor.on("Paste Change input Undo Redo", () => {
+              if (ready) {
+                clearTimeout(inittimeout);
+                inittimeout = setTimeout(() => {
+                  createnote(editor.getContent());
+                }, 500);
+              }
+            });
+          },
+        });
+      };
     </script>
     <script src="assets/js/index.js"></script>
   </body>

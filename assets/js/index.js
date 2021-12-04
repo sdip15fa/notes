@@ -47,10 +47,15 @@ async function newnote(text) {
     .getElementById("root")
     .insertBefore(div, document.getElementById("btn"));
   tinymce.init({
-    selector:'textarea',
-    init_instance_callback: function(editor) {
-      editor.on('Paste Change input Undo Redo', () => {clearTimeout(edittimeout); edittimeout = setTimeout(() => {usercreate(editor.id)}, 500)});
-    }
+    selector: "textarea",
+    init_instance_callback: function (editor) {
+      editor.on("Paste Change input Undo Redo", () => {
+        clearTimeout(edittimeout);
+        edittimeout = setTimeout(() => {
+          usercreate(editor.id);
+        }, 500);
+      });
+    },
   });
 }
 
