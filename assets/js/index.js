@@ -1,6 +1,6 @@
 let ready = false;
 let id = localStorage.id;
-let usernotes;
+let usernotes, edittimeout;
 const alerthtml = document.getElementById("alert");
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -46,7 +46,7 @@ async function newnote(text) {
   tinymce.init({
     selector:'textarea',
     init_instance_callback: function(editor) {
-      editor.on('Paste Change input Undo Redo', () => {usercreate(editor.id)});
+      editor.on('Paste Change input Undo Redo', () => {clearTimeout(edittimeout); edittimeout = setTimeout(() => {usercreate(editor.id)}, 500)});
     }
   });
 }
