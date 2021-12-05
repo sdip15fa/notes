@@ -4,7 +4,7 @@
   "description": "",
   "main": "server/server.js",
   "scripts": {
-    "build": "./compress.sh",
+    "build": "chmod +x compress.sh && ./compress.sh",
     "start": "node server/server.js"
   },
   "author": "wcyat",
