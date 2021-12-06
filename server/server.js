@@ -7,6 +7,9 @@ const pg = require('./pg')
 const app = express()
 app.use(cors())
 app.options('*', cors())
+app.get('/testconnection', async function (req, res) {
+  res.send("ok");
+})
 app.post('/create', body_parser.json(), async function (req, res) {
   const client = new MongoClient(url)
   console.log(typeof req.body, `request ${JSON.stringify(req.body)}`)

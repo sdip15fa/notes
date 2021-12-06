@@ -1,6 +1,7 @@
 let ready = false;
 let id = localStorage.id;
 let usernotes, edittimeout;
+let url = "https://api-notes.wcyat.me";
 const alerthtml = document.getElementById("alert");
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -91,7 +92,7 @@ function usercreate(id) {
   usernotes[id] = tinymce.get(id).getContent();
   axios
     .post(
-      `https://notes-server.wcyat.me/notes/users/${localStorage.k}`,
+      `${url}/notes/users/${localStorage.k}`,
       usernotes
     )
     .then(function (res) {
@@ -102,7 +103,7 @@ function usercreate(id) {
     });
 }
 
-async function init() {
+async function anon() {
   if (await getvar("id")) {
     id = await getvar("id");
     localStorage.id = id;
@@ -114,7 +115,7 @@ async function init() {
     });
   } else {
     await axios
-      .get(`https://notes-server.wcyat.me/get/${id}`)
+      .get(`${url}/get/${id}`)
       .then(function (res) {
         tinymce.get("note").setContent(res.data.text);
       });
@@ -129,7 +130,7 @@ function createnote(text) {
     text: text,
   };
   axios
-    .post("https://notes-server.wcyat.me/create", data)
+    .post(`${url}/create`, data)
     .then(function (response) {
       console.log(response);
     })
@@ -140,51 +141,70 @@ function createnote(text) {
     link();
   }
 }
-if (
-  getvar("signedin") ||
-  getvar("signup") ||
-  getvar("signin") ||
-  getvar("logout")
-) {
-  if (localStorage.alerted) {
-    window.location.replace(window.location.href.split("?")[0]);
+async function testserver(link) {
+  let r = false
+  await axios.get(`${link}/testconnection`)
+    .then((res) => {
+      r = true;
+    })
+    .catch(() => {})
+  return r;
+}
+async function init() {
+  urllist = ["https://api-notes.wcyat.me", "https://notes-server.wcyat.me", "https://api.notes.wcyat.me"];
+  for (i of urllist) {
+    if (await testserver(i)) {
+      url = i;
+      break;
+    }
+  }
+  if (
+    getvar("signedin") ||
+    getvar("signup") ||
+    getvar("signin") ||
+    getvar("logout")
+  ) {
+    if (localStorage.alerted) {
+      window.location.replace(window.location.href.split("?")[0]);
+    } else {
+      alertmessage(
+        getvar("signedin") ? "alert alert-warning" : "alert alert-success",
+        getvar("signedin")
+          ? `You are already signed in as ${localStorage.username}.`
+          : getvar("logout")
+          ? "Successfully logged out."
+          : `Successfully signed ${getvar("signup") ? "up" : "in"} as ${
+              localStorage.username
+            }.`
+      );
+    }
+  }
+  if (localStorage.username && localStorage.k) {
+    document.getElementById("header").innerHTML = `<button
+    style="margin-top: 10px; margin-right: 10px"
+    class="btn btn-secondary float-end"
+    onclick="logout()"
+  >
+    Log out
+  </button>`;
+    document.getElementById("note").remove();
+    const btn = document.createElement("div");
+    btn.className = "delta";
+    btn.id = "btn";
+    btn.innerHTML =
+      "<button class=\"btn btn-primary\" onclick=newnote('')>Create</button>";
+    document.getElementById("root").appendChild(btn);
+    axios
+      .get(`${url}/notes/users/${localStorage.k}`)
+      .then(function (res) {
+        for (i in res.data) {
+          newnote(res.data[i]);
+        }
+        usernotes = res.data;
+        usernotes.key = localStorage.k;
+      });
   } else {
-    alertmessage(
-      getvar("signedin") ? "alert alert-warning" : "alert alert-success",
-      getvar("signedin")
-        ? `You are already signed in as ${localStorage.username}.`
-        : getvar("logout")
-        ? "Successfully logged out."
-        : `Successfully signed ${getvar("signup") ? "up" : "in"} as ${
-            localStorage.username
-          }.`
-    );
+  anon();
   }
 }
-if (localStorage.username && localStorage.k) {
-  document.getElementById("header").innerHTML = `<button
-  style="margin-top: 10px; margin-right: 10px"
-  class="btn btn-secondary float-end"
-  onclick="logout()"
->
-  Log out
-</button>`;
-  document.getElementById("note").remove();
-  const btn = document.createElement("div");
-  btn.className = "delta";
-  btn.id = "btn";
-  btn.innerHTML =
-    "<button class=\"btn btn-primary\" onclick=newnote('')>Create</button>";
-  document.getElementById("root").appendChild(btn);
-  axios
-    .get(`https://notes-server.wcyat.me/notes/users/${localStorage.k}`)
-    .then(function (res) {
-      for (i in res.data) {
-        newnote(res.data[i]);
-      }
-      usernotes = res.data;
-      usernotes.key = localStorage.k;
-    });
-} else {
-  init();
-}
+init();

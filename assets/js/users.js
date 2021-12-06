@@ -1,10 +1,19 @@
+let url = "https://api-notes.wcyat.me";
 if (localStorage.k && localStorage.username) {
   if (localStorage.alerted) {
     delete localStorage.alerted;
   }
   window.location.replace("../?signedin=true");
 }
-
+async function testserver(link) {
+  let r = false
+  await axios.get(link)
+    .then((res) => {
+      r = true;
+    })
+    .catch(() => {})
+  return r;
+}
 function signup() {
   if (
     !document.getElementById("username").value ||
@@ -15,7 +24,7 @@ function signup() {
     return;
   }
   axios
-    .post("https://notes-server.wcyat.me/users/signup", {
+    .post(`${url}/users/signup`, {
       username: document.getElementById("username").value,
       password: document.getElementById("password").value,
     })
@@ -34,7 +43,7 @@ function signup() {
 
 function signin() {
   axios
-    .post("https://notes-server.wcyat.me/users/signin", {
+    .post(`${url}/users/signin`, {
       username: document.getElementById("username").value,
       password: document.getElementById("password").value,
     })
@@ -59,3 +68,13 @@ function check(id) {
     document.getElementById("warning").innerHTML = "";
   }
 }
+async function init() {
+  urllist = ["https://api-notes.wcyat.me", "https://notes-server.wcyat.me", "https://api.notes.wcyat.me"];
+  for (i of urllist) {
+    if (await testserver(i)) {
+      url = i;
+      break;
+    }
+  }
+}
+init();
