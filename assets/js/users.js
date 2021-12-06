@@ -7,7 +7,7 @@ if (localStorage.k && localStorage.username) {
 }
 async function testserver(link) {
   let r = false
-  await axios.get(link)
+  await axios.get(`${link}/testconnection`)
     .then((res) => {
       r = true;
     })
