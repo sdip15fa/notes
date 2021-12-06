@@ -32,15 +32,6 @@ async function newnote(text) {
       break;
     }
   }
-  if (i > 2) {
-    window.location.href += "#";
-    await alertmessage(
-      "alert alert-danger",
-      "Sorry, you can only create two notes due to a limitation from tinymce."
-    );
-    window.location.href = window.location.href.replace("#", "");
-    return;
-  }
   const div = document.createElement("div");
   div.innerHTML = `<br><textarea id="${i}" rows="10" name="note">${text}</textarea>
 </div>`;
