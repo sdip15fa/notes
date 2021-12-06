@@ -91,10 +91,7 @@ function usercreate(id) {
   }
   usernotes[id] = tinymce.get(id).getContent();
   axios
-    .post(
-      `${url}/notes/users/${localStorage.k}`,
-      usernotes
-    )
+    .post(`${url}/notes/users/${localStorage.k}`, usernotes)
     .then(function (res) {
       console.log(res.data);
     })
@@ -114,11 +111,9 @@ async function anon() {
       localStorage.id = id;
     });
   } else {
-    await axios
-      .get(`${url}/get/${id}`)
-      .then(function (res) {
-        tinymce.get("note").setContent(res.data.text);
-      });
+    await axios.get(`${url}/get/${id}`).then(function (res) {
+      tinymce.get("note").setContent(res.data.text);
+    });
     link();
   }
   ready = true;
@@ -142,16 +137,21 @@ function createnote(text) {
   }
 }
 async function testserver(link) {
-  let r = false
-  await axios.get(`${link}/testconnection`)
+  let r = false;
+  await axios
+    .get(`${link}/testconnection`)
     .then((res) => {
       r = true;
     })
-    .catch(() => {})
+    .catch(() => {});
   return r;
 }
 async function init() {
-  urllist = ["https://api-notes.wcyat.me", "https://notes-server.wcyat.me", "https://api.notes.wcyat.me"];
+  urllist = [
+    "https://api-notes.wcyat.me",
+    "https://notes-server.wcyat.me",
+    "https://api.notes.wcyat.me",
+  ];
   for (i of urllist) {
     if (await testserver(i)) {
       url = i;
@@ -188,24 +188,22 @@ async function init() {
     Log out
   </button>`;
     document.getElementById("note").remove();
-    tinymce.EditorManager.execCommand('mceRemoveEditor',true, "note");
+    tinymce.EditorManager.execCommand("mceRemoveEditor", true, "note");
     const btn = document.createElement("div");
     btn.className = "delta";
     btn.id = "btn";
     btn.innerHTML =
       "<button class=\"btn btn-primary\" onclick=newnote('')>Create</button>";
     document.getElementById("root").appendChild(btn);
-    axios
-      .get(`${url}/notes/users/${localStorage.k}`)
-      .then(function (res) {
-        for (i in res.data) {
-          newnote(res.data[i]);
-        }
-        usernotes = res.data;
-        usernotes.key = localStorage.k;
-      });
+    axios.get(`${url}/notes/users/${localStorage.k}`).then(function (res) {
+      for (i in res.data) {
+        newnote(res.data[i]);
+      }
+      usernotes = res.data;
+      usernotes.key = localStorage.k;
+    });
   } else {
-  anon();
+    anon();
   }
 }
 init();

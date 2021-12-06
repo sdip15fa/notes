@@ -6,12 +6,13 @@ if (localStorage.k && localStorage.username) {
   window.location.replace("../?signedin=true");
 }
 async function testserver(link) {
-  let r = false
-  await axios.get(`${link}/testconnection`)
+  let r = false;
+  await axios
+    .get(`${link}/testconnection`)
     .then((res) => {
       r = true;
     })
-    .catch(() => {})
+    .catch(() => {});
   return r;
 }
 function signup() {
@@ -69,7 +70,11 @@ function check(id) {
   }
 }
 async function init() {
-  urllist = ["https://api-notes.wcyat.me", "https://notes-server.wcyat.me", "https://api.notes.wcyat.me"];
+  urllist = [
+    "https://api-notes.wcyat.me",
+    "https://notes-server.wcyat.me",
+    "https://api.notes.wcyat.me",
+  ];
   for (i of urllist) {
     if (await testserver(i)) {
       url = i;
