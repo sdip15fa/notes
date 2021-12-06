@@ -3,7 +3,7 @@ const body_parser = require("body-parser");
 const url = `mongodb+srv://${process.env.mongocred}@${process.env.mongourl}/`;
 const express = require("express");
 const cors = require("cors");
-const pg = require("./pg");
+const rg = require("wcyat-rg");
 const app = express();
 app.use(cors());
 app.options("*", cors());
@@ -13,7 +13,6 @@ app.get("/testconnection", async function (req, res) {
 app.post("/create", body_parser.json(), async function (req, res) {
   const client = new MongoClient(url);
   console.log(typeof req.body, `request ${JSON.stringify(req.body)}`);
-  // console.log(req.body.id);
   try {
     await client.connect();
     const database = await client.db("notes");
@@ -55,7 +54,15 @@ app.post("/users/:i", body_parser.json(), async function (req, res) {
         res.send("Username already used.");
       } else {
         const o = req.body;
-        o.key = await pg.generate();
+        o.key = await rg.generate({
+          include: {
+            numbers: true,
+            upper: true,
+            lower: true,
+            special: false
+          },
+          digits: 15
+        });
         await users.insertOne(o);
         res.send(o.key);
       }
