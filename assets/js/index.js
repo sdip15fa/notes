@@ -188,6 +188,7 @@ async function init() {
     Log out
   </button>`;
     document.getElementById("note").remove();
+    tinymce.EditorManager.execCommand('mceRemoveEditor',true, "note");
     const btn = document.createElement("div");
     btn.className = "delta";
     btn.id = "btn";
