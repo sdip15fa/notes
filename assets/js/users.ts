@@ -1,11 +1,11 @@
-let url:string = "https://api-notes.wcyat.me";
+let s:string = "https://api-notes.wcyat.me";
 if (localStorage.k && localStorage.username) {
   if (localStorage.alerted) {
     delete localStorage.alerted;
   }
   window.location.replace("../?signedin=true");
 }
-async function testserver(link:string) {
+async function test(link:string) {
   let r:boolean = false;
   // @ts-ignore
   await axios
@@ -27,7 +27,7 @@ function signup() {
   }
   // @ts-ignore
   axios
-    .post(`${url}/users/signup`, {
+    .post(`${s}/users/signup`, {
       username: document.getElementById("username")["value"],
       password: document.getElementById("password")["value"],
     })
@@ -47,7 +47,7 @@ function signup() {
 function signin() {
   // @ts-ignore
   axios
-    .post(`${url}/users/signin`, {
+    .post(`${s}/users/signin`, {
       username: document.getElementById("username")["value"],
       password: document.getElementById("password")["value"],
     })
@@ -72,17 +72,17 @@ function check(id:string) {
     document.getElementById("warning").innerHTML = "";
   }
 }
-async function init() {
+async function ini() {
   const urllist:Array<string> = [
     "https://api-notes.wcyat.me",
     "https://notes-server.wcyat.me",
     "https://api.notes.wcyat.me",
   ];
   for (const i of urllist) {
-    if (await testserver(i)) {
-      url = i;
+    if (await test(i)) {
+      s = i;
       break;
     }
   }
 }
-init();
+ini();
