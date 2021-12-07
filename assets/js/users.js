@@ -34,14 +34,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var url = "https://api-notes.wcyat.me";
+var s = "https://api-notes.wcyat.me";
 if (localStorage.k && localStorage.username) {
     if (localStorage.alerted) {
         delete localStorage.alerted;
     }
     window.location.replace("../?signedin=true");
 }
-function testserver(link) {
+function test(link) {
     return __awaiter(this, void 0, void 0, function () {
         var r;
         return __generator(this, function (_a) {
@@ -71,7 +71,7 @@ function signup() {
     }
     // @ts-ignore
     axios
-        .post("".concat(url, "/users/signup"), {
+        .post("".concat(s, "/users/signup"), {
         username: document.getElementById("username")["value"],
         password: document.getElementById("password")["value"]
     })
@@ -101,7 +101,7 @@ function signup() {
 function signin() {
     // @ts-ignore
     axios
-        .post("".concat(url, "/users/signin"), {
+        .post("".concat(s, "/users/signin"), {
         username: document.getElementById("username")["value"],
         password: document.getElementById("password")["value"]
     })
@@ -137,7 +137,7 @@ function check(id) {
         document.getElementById("warning").innerHTML = "";
     }
 }
-function init() {
+function ini() {
     return __awaiter(this, void 0, void 0, function () {
         var urllist, _i, urllist_1, i;
         return __generator(this, function (_a) {
@@ -153,10 +153,10 @@ function init() {
                 case 1:
                     if (!(_i < urllist_1.length)) return [3 /*break*/, 4];
                     i = urllist_1[_i];
-                    return [4 /*yield*/, testserver(i)];
+                    return [4 /*yield*/, test(i)];
                 case 2:
                     if (_a.sent()) {
-                        url = i;
+                        s = i;
                         return [3 /*break*/, 4];
                     }
                     _a.label = 3;
@@ -168,4 +168,4 @@ function init() {
         });
     });
 }
-init();
+ini();
