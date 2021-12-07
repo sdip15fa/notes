@@ -4,18 +4,23 @@
   "description": "",
   "main": "server/server.js",
   "scripts": {
-    "build": "rm assets/js/min/* && node build.js",
+    "build": "npx tsc assets/js/*.ts && rm assets/js/min/* && node build.js",
     "start": "node server/server.js"
   },
   "author": "wcyat",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.24.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "fs": "^0.0.1-security",
     "mongodb": "^4.2.0",
     "terser": "^5.10.0",
+    "tinymce": "^5.10.2",
     "wcyat-rg": "^1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.2"
   }
 }

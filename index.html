@@ -40,6 +40,9 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <script>
+      var exports = {};
+    </script>
   </head>
   <body>
     <header id="header">
@@ -88,7 +91,7 @@
           selector: "#note",
           init_instance_callback: function (editor) {
             editor.on("Paste Change input Undo Redo", () => {
-              if (ready) {
+              if (r) {
                 clearTimeout(inittimeout);
                 inittimeout = setTimeout(() => {
                   createnote(editor.getContent());
@@ -99,6 +102,6 @@
         });
       };
     </script>
-    <script src="assets/js/min/index.min.js"></script>
+    <script src="assets/js/index.js"></script>
   </body>
 </html>

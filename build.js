@@ -26,7 +26,7 @@ const config = {
 function main() {
   fs.readdir("assets/js", async (err, files) => {
     files.forEach(async (file) => {
-      if (file !== "min") {
+      if (file.endsWith('.js')) {
         file = `assets/js/${file}`;
         const code = fs.readFileSync(file, "utf8");
         const minified = await minify(code, config);
