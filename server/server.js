@@ -4,7 +4,7 @@ const url = `mongodb+srv://${process.env.mongocred}@${process.env.mongourl}/`;
 const express = require("express");
 const cors = require("cors");
 const rg = require("wcyat-rg");
-const hash = require('hash.js');
+const hash = require("hash.js");
 const app = express();
 app.use(cors());
 app.options("*", cors());
@@ -37,15 +37,16 @@ app.post("/users/:i", body_parser.json(), async function (req, res) {
       if (pair && req.body.password === pair.password) {
         const key = pair.key;
         res.send(key);
-      } 
-      else if (pair && req.body.password === hash.sha256().update(pair.password).digest('hex')) {
+      } else if (
+        pair &&
+        req.body.password === hash.sha256().update(pair.password).digest("hex")
+      ) {
         const key = pair.key;
         pair.password = req.body.password;
-        await users.deleteOne({username : req.body.username});
+        await users.deleteOne({ username: req.body.username });
         await users.insertOne(pair);
         res.send(key);
-      }
-      else {
+      } else {
         res.status(401);
         res.send("Username / password incorrect.");
       }
@@ -68,9 +69,9 @@ app.post("/users/:i", body_parser.json(), async function (req, res) {
             numbers: true,
             upper: true,
             lower: true,
-            special: false
+            special: false,
           },
-          digits: 15
+          digits: 15,
         });
         await users.insertOne(o);
         res.send(o.key);
@@ -139,8 +140,7 @@ app.get("/get/:id", async function (req, res) {
   if (note) {
     res.set("Content-Type", "application/json");
     res.send(JSON.stringify(note));
-  }
-  else {
+  } else {
     res.status(404);
     res.send("not found");
   }

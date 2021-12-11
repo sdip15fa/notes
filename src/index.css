@@ -12,7 +12,9 @@
   margin-right: 10px;
 }
 
-.editor, .createbtn, .link {
+.editor,
+.createbtn,
+.link {
   margin-left: 20px;
   margin-right: 20px;
 }
