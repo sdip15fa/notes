@@ -11,8 +11,10 @@ pages:
   script:
     - yarn install
     - yarn run build
+    - rm -rf public
+    - mv build public
   artifacts:
     paths:
-      - build
+      - public
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
