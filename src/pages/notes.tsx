@@ -100,7 +100,7 @@ class Notes extends React.Component {
 }
 function Logout() {
   return (
-    <button className='userbtn btn btn-secondary float-end' onClick={() => {delete localStorage.k; delete localStorage.username; if (localStorage.alerted) {
+    <button className='userbtn btn btn-secondary float-end' onClick={() => {delete localStorage.k; delete localStorage.username; delete localStorage.password; if (localStorage.alerted) {
     delete localStorage.alerted;
   }
 ;window.location.replace('/?logout=successful')}}>Log out</button>
