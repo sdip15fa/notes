@@ -15,6 +15,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "fs": "^0.0.1-security",
+    "hash.js": "^1.1.7",
     "mongodb": "^4.2.0",
     "terser": "^5.10.0",
     "tinymce": "^5.10.2",

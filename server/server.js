@@ -4,6 +4,7 @@ const url = `mongodb+srv://${process.env.mongocred}@${process.env.mongourl}/`;
 const express = require("express");
 const cors = require("cors");
 const rg = require("wcyat-rg");
+const hash = require('hash.js');
 const app = express();
 app.use(cors());
 app.options("*", cors());
@@ -33,10 +34,18 @@ app.post("/users/:i", body_parser.json(), async function (req, res) {
       const database = await client.db("users");
       const users = await database.collection("users");
       const pair = await users.findOne({ username: req.body.username });
-      if (pair && req.body.password === (await pair.password)) {
+      if (pair && req.body.password === pair.password) {
         const key = pair.key;
         res.send(key);
-      } else {
+      } 
+      else if (pair && req.body.password === hash.sha256().update(pair.password).digest('hex')) {
+        const key = pair.key;
+        pair.password = req.body.password;
+        await users.deleteOne({username : req.body.username});
+        await users.insertOne(pair);
+        res.send(key);
+      }
+      else {
         res.status(401);
         res.send("Username / password incorrect.");
       }
