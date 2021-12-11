@@ -1,17 +1,18 @@
-A simple notes sharing system built with mongodb, express.js, and cloudflare workers.<br>
-[https://notes.wcyat.me](https://notes.wcyat.me)
-
-# Deploy
-
-```
-npm install
-npm run start
-```
-
-the server will start at localhost:4000 (you need to set two environmental variables, mongocred: username:password, mongourl for mongodb)
-
-Then you should host your static content elsewhere, remember to change the links.
-
 # Notes
-
+A simple React web app enabling notes sharing (not signed in) and saving (signed in).
+## Deploy
+```
+yarn install //install packages
+```
+```
+yarn run build //build the react web app
+```
+```
+yarn run start //start the api server at localhost:4000
+```
+```
+yarn run react-start //start the react web app at localhost:3000
+```
+## Reminders
 idgenerator is hosted by cloudflare workers.
+Don't forget to change api urls in src/ typescript files (it's fine if you use my api servers).
