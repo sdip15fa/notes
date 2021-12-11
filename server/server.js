@@ -127,8 +127,14 @@ app.get("/get/:id", async function (req, res) {
   } finally {
     await client.close();
   }
-  res.set("Content-Type", "application/json");
-  res.send(JSON.stringify(note));
+  if (note) {
+    res.set("Content-Type", "application/json");
+    res.send(JSON.stringify(note));
+  }
+  else {
+    res.status(404);
+    res.send("not found");
+  }
 });
 app.listen(4000, function () {
   console.log("Listening at port 4000");
