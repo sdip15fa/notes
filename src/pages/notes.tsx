@@ -13,7 +13,7 @@ function Alert() {
   ) {
     if (localStorage.alerted) {
       window.location.replace(window.location.href.split("?")[0]);
-      return <div></div>
+      return <div />
     } else {
       return (
         alertmessage(
@@ -27,7 +27,7 @@ function Alert() {
   }
 }
 else {
-  return <div></div>
+  return <div />
 }
 }
 
@@ -95,7 +95,7 @@ class Notes extends React.Component {
         </div>
       );
     }
-    return <div></div>
+    return <div />
   }
 }
 function Logout() {
