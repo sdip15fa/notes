@@ -1,9 +1,9 @@
 import React from "react";
 import axios from "axios";
 import hash from "hash.js";
-import { serverurl, testserver } from "../lib/common";
+import { testserver } from "../lib/common";
 import './users.css';
-let url:string = serverurl;
+let url:string = "https://api-notes.wcyat.me";
 class Main extends React.Component {
     username = '';
     password = '';
