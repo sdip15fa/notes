@@ -18,7 +18,7 @@ app.post("/create", body_parser.json(), async (req, res) => {
     await client.connect();
     const database = client.db("notes");
     const notes = database.collection("notes");
-    await notes.deleteOne({ id: req.body.id });
+    await notes.deleteMany({ id: req.body.id });
     await notes.insertOne(req.body);
   } finally {
     await client.close();
@@ -112,7 +112,7 @@ app.post("/notes/users/:user", body_parser.json(), async (req, res) => {
     const notes = database.collection("notes");
     const users = database.collection("users");
     if ((await users.find({ key: key }).count()) > 0) {
-      await notes.deleteOne({ key: key });
+      await notes.deleteMany({ key: key });
       await notes.insertOne(req.body);
       res.send("ok");
     } else {
