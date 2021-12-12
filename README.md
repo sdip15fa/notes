@@ -1,6 +1,7 @@
 # Notes
 
 A simple React web app enabling notes sharing (not signed in) and saving (signed in).
+Hosted at [notes.wcyat.me](https://notes.wcyat.me).
 
 ## Deploy
 
