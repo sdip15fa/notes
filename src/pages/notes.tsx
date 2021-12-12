@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { testserver, getvar, alertmessage } from '../lib/common';
+import { encrypt, decrypt } from '../lib/aes';
 import Note from '../components/note';
 let changetimeout:any;
 let usernotes:any;
@@ -35,8 +36,12 @@ function changehandler(newvalue:any, e:any) {
   if (!changetimeout) {
     changetimeout = setTimeout(() => {
       usernotes[e.id] = e.getContent();
+      const en = Object.assign({}, usernotes);
+      for (const j in en) {
+        en[j] = encrypt(en[j], localStorage.password);
+      }
       changetimeout = undefined;
-      axios.post(`${url}/notes/users/${localStorage.k}`, Object.assign({key : localStorage.k},usernotes))
+      axios.post(`${url}/notes/users/${localStorage.k}`, Object.assign({key : localStorage.k},en))
            .then(res => {
              console.log(res)
            })
@@ -66,6 +71,17 @@ class Notes extends React.Component {
       }
     }
   }
+  decryptnotes (j:any) {
+    for (const k in j) {
+      try {
+        const decrypted = decrypt(j[k], localStorage.password);
+        if (decrypted) {
+          j[k] = decrypted;
+        }
+      }
+      catch {}
+    }
+  }
   componentDidMount() {
     const getnotes = setInterval(() => {
       if (url) {
@@ -73,6 +89,7 @@ class Notes extends React.Component {
         axios.get(`${url}/notes/users/${localStorage.k}`).then(res => {
           const i = res.data;
           this.autodelete(i);
+          this.decryptnotes(i);
           usernotes = Object.assign({}, i);
           this.setState({i});
         })
