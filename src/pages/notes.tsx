@@ -95,7 +95,7 @@ class Notes extends React.Component {
         </div>
       );
     }
-    return <p>Please wait...</p>
+    return <p style={{textAlign : "center"}}>Please wait...</p>
   }
 }
 function Logout() {

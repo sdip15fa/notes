@@ -76,7 +76,7 @@ class Anonnote extends React.Component {
     }}, 100) 
     } 
     render() {
-        if (this.state.i.text) {
+        if (this.state.i.id) {
           return (
             <div> 
               <Note id="note" text={this.state.i.text} changehandler={this.changehandler}/> 
@@ -84,7 +84,7 @@ class Anonnote extends React.Component {
             </div> 
           )
         }
-        return <p>Please wait...</p>
+        return <p style={{textAlign : "center"}}>Please wait...</p>
     } 
 } 
  
