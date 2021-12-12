@@ -75,13 +75,16 @@ class Anonnote extends React.Component {
         clearInterval(content); 
     }}, 100) 
     } 
-    render() { 
-        return ( 
+    render() {
+        if (this.state.i.text) {
+          return (
             <div> 
               <Note id="note" text={this.state.i.text} changehandler={this.changehandler}/> 
               <this.Link/> 
             </div> 
-        ) 
+          )
+        }
+        return <p>Please wait...</p>
     } 
 } 
  

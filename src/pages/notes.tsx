@@ -95,7 +95,7 @@ class Notes extends React.Component {
         </div>
       );
     }
-    return <div />
+    return <p>Please wait...</p>
   }
 }
 function Logout() {
