@@ -64,8 +64,8 @@ stages:
               WebAppName: $(webAppName)
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               RuntimeStack: 'NODE|10.10'
-              StartupCommand: 'npm run server:all'
+              StartupCommand: 'yarn run server:all'
               ScriptType: 'Inline Script'
               InlineScript: |
-                npm install
-                npm run build --if-present
+                yarn install
+                yarn run build --if-present
