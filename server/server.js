@@ -8,16 +8,16 @@ const hash = require("hash.js");
 const app = express();
 app.use(cors());
 app.options("*", cors());
-app.get("/testconnection", async function (req, res) {
+app.get("/testconnection", async (req, res) => {
   res.send("ok");
 });
-app.post("/create", body_parser.json(), async function (req, res) {
+app.post("/create", body_parser.json(), async (req, res) => {
   const client = new MongoClient(url);
   console.log(typeof req.body, `request ${JSON.stringify(req.body)}`);
   try {
     await client.connect();
-    const database = await client.db("notes");
-    const notes = await database.collection("notes");
+    const database = client.db("notes");
+    const notes = database.collection("notes");
     await notes.deleteOne({ id: req.body.id });
     await notes.insertOne(req.body);
   } finally {
@@ -26,13 +26,13 @@ app.post("/create", body_parser.json(), async function (req, res) {
   res.send("ok");
 });
 
-app.post("/users/:i", body_parser.json(), async function (req, res) {
+app.post("/users/:i", body_parser.json(), async (req, res) => {
   const client = new MongoClient(url);
   if (req.params.i === "signin") {
     try {
       await client.connect();
-      const database = await client.db("users");
-      const users = await database.collection("users");
+      const database = client.db("users");
+      const users = database.collection("users");
       const pair = await users.findOne({ username: req.body.username });
       if (pair && req.body.password === pair.password) {
         const key = pair.key;
@@ -56,15 +56,15 @@ app.post("/users/:i", body_parser.json(), async function (req, res) {
   } else if (req.params.i === "signup") {
     try {
       await client.connect();
-      const database = await client.db("users");
-      const users = await database.collection("users");
+      const database = client.db("users");
+      const users = database.collection("users");
       console.log(await users.find({ username: req.body.username }).count());
       if ((await users.find({ username: req.body.username }).count()) > 0) {
         res.status(409);
         res.send("Username already used.");
       } else {
         const o = req.body;
-        o.key = await rg.generate({
+        o.key = rg.generate({
           include: {
             numbers: true,
             upper: true,
@@ -82,13 +82,13 @@ app.post("/users/:i", body_parser.json(), async function (req, res) {
   }
 });
 
-app.get("/notes/users/:user", async function (req, res) {
+app.get("/notes/users/:user", async (req, res) => {
   const client = new MongoClient(url);
   try {
     const key = req.params.user;
     await client.connect();
-    const database = await client.db("users");
-    const notes = await database.collection("notes");
+    const database = client.db("users");
+    const notes = database.collection("notes");
     if ((await notes.find({ key: key }).count()) > 0) {
       const o = await notes.findOne({ key: key });
       delete o._id;
@@ -103,14 +103,14 @@ app.get("/notes/users/:user", async function (req, res) {
   }
 });
 
-app.post("/notes/users/:user", body_parser.json(), async function (req, res) {
+app.post("/notes/users/:user", body_parser.json(), async (req, res) => {
   const key = req.params.user;
   const client = new MongoClient(url);
   try {
     await client.connect();
-    const database = await client.db("users");
-    const notes = await database.collection("notes");
-    const users = await database.collection("users");
+    const database = client.db("users");
+    const notes = database.collection("notes");
+    const users = database.collection("users");
     if ((await users.find({ key: key }).count()) > 0) {
       await notes.deleteOne({ key: key });
       await notes.insertOne(req.body);
@@ -124,13 +124,13 @@ app.post("/notes/users/:user", body_parser.json(), async function (req, res) {
   }
 });
 
-app.get("/get/:id", async function (req, res) {
+app.get("/get/:id", async (req, res) => {
   const client = new MongoClient(url);
   try {
     const id = req.params.id;
     await client.connect();
-    const database = await client.db("notes");
-    const notes = await database.collection("notes");
+    const database = client.db("notes");
+    const notes = database.collection("notes");
     const query = { id: id };
     var note = await notes.findOne(query);
     console.log(note);
