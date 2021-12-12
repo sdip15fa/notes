@@ -1,10 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import { serverurl, testserver, getvar, alertmessage } from '../lib/common';
+import { testserver, getvar, alertmessage } from '../lib/common';
 import Note from '../components/note';
 let changetimeout:any;
 let usernotes:any;
-let url = serverurl;
+let url:string;
 function Alert() {
   if (
     getvar("signedin") ||
@@ -67,12 +67,18 @@ class Notes extends React.Component {
     }
   }
   componentDidMount() {
-    axios.get(`${url}/notes/users/${localStorage.k}`).then(res => {
-      const i = res.data;
-      this.autodelete(i);
-      usernotes = Object.assign({}, i);
-      this.setState({i});
-    })
+    const getnotes = setInterval(() => {
+      if (url) {
+        clearInterval(getnotes);
+        axios.get(`${url}/notes/users/${localStorage.k}`).then(res => {
+          const i = res.data;
+          this.autodelete(i);
+          usernotes = Object.assign({}, i);
+          this.setState({i});
+        })
+      }
+    }, 100)
+    
   }
   createhandler() {
     const i:any = Object.assign({},this.state.i);

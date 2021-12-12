@@ -44,4 +44,3 @@ export async function testserver() {
   }
   return "no server available";
 }
-export const serverurl = "https://api-notes.wcyat.me";

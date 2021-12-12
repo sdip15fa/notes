@@ -1,7 +1,7 @@
 import React from "react"; 
 import axios from "axios"; 
 import Note from "../components/note"; 
-import {serverurl, getvar, testserver, alertmessage} from '../lib/common'; 
+import {getvar, testserver, alertmessage} from '../lib/common'; 
 let id:string; 
 if (getvar("id")) { 
     id = getvar("id"); 
@@ -10,7 +10,7 @@ if (getvar("id")) {
 else { 
     id = localStorage.id; 
 } 
-let url = serverurl; 
+let url:string; 
 let changetimeout:any; 
 function User() { 
     return ( 
@@ -58,7 +58,7 @@ class Anonnote extends React.Component {
     } 
     componentDidMount() { 
         const content = setInterval( () => { 
-        if (id) { 
+        if (id && url) { 
         axios.get(`${url}/get/${id}`).then(res => { 
             const i = res.data; 
             delete i._id; 
