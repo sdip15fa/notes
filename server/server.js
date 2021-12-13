@@ -5,9 +5,13 @@ const express = require("express");
 const cors = require("cors");
 const rg = require("wcyat-rg");
 const hash = require("hash.js");
+const cf = require('node_cloudflare');
 const app = express();
 app.use(cors());
 app.options("*", cors());
+function getip(req) {
+  return (req.connection.remoteAddress ? req.connection.remoteAddress : req.remoteAddress);
+}
 app.get("/testconnection", async (req, res) => {
   res.send("ok");
 });
@@ -55,12 +59,13 @@ app.post("/users/:i", body_parser.json(), async (req, res) => {
       await client.close();
     }
   } else if (req.params.i === "signup") {
+    const ip = getip(req);
     try {
       await client.connect();
       const database = client.db("users");
       const users = database.collection("users");
-      console.log(req.ip);
-      if (await users.find({ip : req.ip}).count() < 10) {
+      console.log(ip);
+      if (await users.find({ip : ip}).count() < 10) {
       if ((await users.find({ username: req.body.username }).count()) > 0) {
         res.status(409);
         res.send("Username already used.");
@@ -75,7 +80,7 @@ app.post("/users/:i", body_parser.json(), async (req, res) => {
           },
           digits: 15,
         });
-        o.ip = req.ip;
+        o.ip = ip;
         await users.insertOne(o);
         res.send(o.key);
       }}
@@ -148,6 +153,12 @@ app.get("/get/:id", async (req, res) => {
     res.send("not found");
   }
 });
-app.listen(4000, function () {
-  console.log("Listening at port 4000");
-});
+cf.load(function (error, fs_error) {
+  if (fs_error)
+	{
+		throw new Error(fs_error);
+	}
+  app.listen(4000, function () {
+    console.log("Listening at port 4000");
+  });  
+})
