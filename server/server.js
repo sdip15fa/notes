@@ -59,6 +59,7 @@ app.post("/users/:i", body_parser.json(), async (req, res) => {
       await client.connect();
       const database = client.db("users");
       const users = database.collection("users");
+      console.log(req.ip);
       if (await users.find({ip : req.ip}).count() < 10) {
       if ((await users.find({ username: req.body.username }).count()) > 0) {
         res.status(409);
