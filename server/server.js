@@ -13,7 +13,7 @@ app.get("/testconnection", async (req, res) => {
 });
 app.post("/create", body_parser.json(), async (req, res) => {
   const client = new MongoClient(url);
-  console.log(typeof req.body, `request ${JSON.stringify(req.body)}`);
+  if (req.body.id && req.body.text && Object.keys(req.body).length() === 2) {
   try {
     await client.connect();
     const database = client.db("notes");
@@ -24,7 +24,8 @@ app.post("/create", body_parser.json(), async (req, res) => {
     await client.close();
   }
   res.send("ok");
-});
+}
+else {res.status(409); res.send("Syntax error.")}});
 
 app.post("/users/:i", body_parser.json(), async (req, res) => {
   const client = new MongoClient(url);
@@ -58,7 +59,7 @@ app.post("/users/:i", body_parser.json(), async (req, res) => {
       await client.connect();
       const database = client.db("users");
       const users = database.collection("users");
-      console.log(await users.find({ username: req.body.username }).count());
+      if (await users.find({ip : req.ip}).count() < 10) {
       if ((await users.find({ username: req.body.username }).count()) > 0) {
         res.status(409);
         res.send("Username already used.");
@@ -73,9 +74,10 @@ app.post("/users/:i", body_parser.json(), async (req, res) => {
           },
           digits: 15,
         });
+        o.ip = req.ip;
         await users.insertOne(o);
         res.send(o.key);
-      }
+      }}
     } finally {
       await client.close();
     }
