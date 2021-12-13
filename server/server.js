@@ -64,8 +64,6 @@ app.post("/users/:i", body_parser.json(), async (req, res) => {
       await client.connect();
       const database = client.db("users");
       const users = database.collection("users");
-      console.log(ip);
-      if (await users.find({ip : ip}).count() < 10) {
       if ((await users.find({ username: req.body.username }).count()) > 0) {
         res.status(409);
         res.send("Username already used.");
@@ -80,15 +78,12 @@ app.post("/users/:i", body_parser.json(), async (req, res) => {
           },
           digits: 15,
         });
-        o.ip = ip;
         await users.insertOne(o);
         res.send(o.key);
-      }}
-    } finally {
+      }} finally {
       await client.close();
     }
-  }
-});
+  }});
 
 app.get("/notes/users/:user", async (req, res) => {
   const client = new MongoClient(url);
