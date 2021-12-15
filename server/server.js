@@ -17,7 +17,7 @@ app.get("/testconnection", async (req, res) => {
 });
 app.post("/create", body_parser.json(), async (req, res) => {
   const client = new MongoClient(url);
-  if (req.body.id && req.body.text && Object.keys(req.body).length() === 2) {
+  if (req.body.id && req.body.text && Object.keys(req.body).length === 2) {
   try {
     await client.connect();
     const database = client.db("notes");
