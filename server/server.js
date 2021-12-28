@@ -16,62 +16,82 @@ app.post("/create", body_parser.json(), async (req, res) => {
   const client = new MongoClient(url);
   if (req.body.id && req.body.text && Object.keys(req.body).length === 2) {
   try {
-    await client.connect();
-    const database = client.db("notes");
-    const notes = database.collection("notes");
-    await notes.deleteMany({ id: req.body.id });
-    await notes.insertOne(req.body);
+    await client.connect()
+    const database = client.db('notes')
+    const notes = database.collection('notes')
+    await notes.deleteMany({ id: req.body.id })
+    await notes.insertOne(req.body)
   } finally {
-    await client.close();
+    await client.close()
   }
+<<<<<<< HEAD
   res.send("ok");
 }
 else {res.status(409); res.send("Syntax error.")}});
+=======
+  res.send('ok')
+})
+>>>>>>> 23e62122040e5a371e9cdb9a222342a93f6be9d2
 
-app.post("/users/:i", body_parser.json(), async (req, res) => {
-  const client = new MongoClient(url);
-  if (req.params.i === "signin") {
+app.post('/users/:i', body_parser.json(), async (req, res) => {
+  const client = new MongoClient(url)
+  if (req.params.i === 'signin') {
     try {
+<<<<<<< HEAD
       await client.connect();
       const database = client.db("notes");
       const users = database.collection("users");
       const pair = await users.findOne({ username: req.body.username });
+=======
+      await client.connect()
+      const database = client.db('users')
+      const users = database.collection('users')
+      const pair = await users.findOne({ username: req.body.username })
+>>>>>>> 23e62122040e5a371e9cdb9a222342a93f6be9d2
       if (pair && req.body.password === pair.password) {
-        const key = pair.key;
-        res.send(key);
+        const key = pair.key
+        res.send(key)
       } else if (
         pair &&
-        req.body.password === hash.sha256().update(pair.password).digest("hex")
+        req.body.password === hash.sha256().update(pair.password).digest('hex')
       ) {
-        const key = pair.key;
-        pair.password = req.body.password;
-        await users.deleteOne({ username: req.body.username });
-        await users.insertOne(pair);
-        res.send(key);
+        const key = pair.key
+        pair.password = req.body.password
+        await users.deleteOne({ username: req.body.username })
+        await users.insertOne(pair)
+        res.send(key)
       } else {
-        res.status(401);
-        res.send("Username / password incorrect.");
+        res.status(401)
+        res.send('Username / password incorrect.')
       }
     } finally {
-      await client.close();
+      await client.close()
     }
-  } else if (req.params.i === "signup") {
+  } else if (req.params.i === 'signup') {
     try {
+<<<<<<< HEAD
       await client.connect();
       const database = client.db("notes");
       const users = database.collection("users");
+=======
+      await client.connect()
+      const database = client.db('users')
+      const users = database.collection('users')
+      console.log(await users.find({ username: req.body.username }).count())
+>>>>>>> 23e62122040e5a371e9cdb9a222342a93f6be9d2
       if ((await users.find({ username: req.body.username }).count()) > 0) {
-        res.status(409);
-        res.send("Username already used.");
+        res.status(409)
+        res.send('Username already used.')
       } else {
-        const o = req.body;
+        const o = req.body
         o.key = rg.generate({
           include: {
             numbers: true,
             upper: true,
             lower: true,
-            special: false,
+            special: false
           },
+<<<<<<< HEAD
           digits: 15,
         });
         await users.insertOne(o);
@@ -80,70 +100,96 @@ app.post("/users/:i", body_parser.json(), async (req, res) => {
       await client.close();
     }
   }});
+=======
+          digits: 15
+        })
+        await users.insertOne(o)
+        res.send(o.key)
+      }
+    } finally {
+      await client.close()
+    }
+  }
+})
+>>>>>>> 23e62122040e5a371e9cdb9a222342a93f6be9d2
 
-app.get("/notes/users/:user", async (req, res) => {
-  const client = new MongoClient(url);
+app.get('/notes/users/:user', async (req, res) => {
+  const client = new MongoClient(url)
   try {
+<<<<<<< HEAD
     const key = req.params.user;
     await client.connect();
     const database = client.db("notes");
     const notes = database.collection("usernotes");
+=======
+    const key = req.params.user
+    await client.connect()
+    const database = client.db('users')
+    const notes = database.collection('notes')
+>>>>>>> 23e62122040e5a371e9cdb9a222342a93f6be9d2
     if ((await notes.find({ key: key }).count()) > 0) {
-      const o = await notes.findOne({ key: key });
-      delete o._id;
-      delete o.key;
-      res.send(o);
+      const o = await notes.findOne({ key: key })
+      delete o._id
+      delete o.key
+      res.send(o)
     } else {
-      res.status(404);
-      res.send("Not found.");
+      res.status(404)
+      res.send('Not found.')
     }
   } finally {
-    await client.close();
+    await client.close()
   }
-});
+})
 
-app.post("/notes/users/:user", body_parser.json(), async (req, res) => {
-  const key = req.params.user;
-  const client = new MongoClient(url);
+app.post('/notes/users/:user', body_parser.json(), async (req, res) => {
+  const key = req.params.user
+  const client = new MongoClient(url)
   try {
+<<<<<<< HEAD
     await client.connect();
     const database = client.db("notes");
     const notes = database.collection("usernotes");
     const users = database.collection("users");
+=======
+    await client.connect()
+    const database = client.db('users')
+    const notes = database.collection('notes')
+    const users = database.collection('users')
+>>>>>>> 23e62122040e5a371e9cdb9a222342a93f6be9d2
     if ((await users.find({ key: key }).count()) > 0) {
-      await notes.deleteMany({ key: key });
-      await notes.insertOne(req.body);
-      res.send("ok");
+      await notes.deleteMany({ key: key })
+      await notes.insertOne(req.body)
+      res.send('ok')
     } else {
-      res.status(404);
-      res.send("User not found.");
+      res.status(404)
+      res.send('User not found.')
     }
   } finally {
-    await client.close();
+    await client.close()
   }
-});
+})
 
-app.get("/get/:id", async (req, res) => {
-  const client = new MongoClient(url);
+app.get('/get/:id', async (req, res) => {
+  const client = new MongoClient(url)
   try {
-    const id = req.params.id;
-    await client.connect();
-    const database = client.db("notes");
-    const notes = database.collection("notes");
-    const query = { id: id };
-    var note = await notes.findOne(query);
-    console.log(note);
+    const id = req.params.id
+    await client.connect()
+    const database = client.db('notes')
+    const notes = database.collection('notes')
+    const query = { id: id }
+    var note = await notes.findOne(query)
+    console.log(note)
   } finally {
-    await client.close();
+    await client.close()
   }
   if (note) {
-    res.set("Content-Type", "application/json");
-    res.send(JSON.stringify(note));
+    res.set('Content-Type', 'application/json')
+    res.send(JSON.stringify(note))
   } else {
-    res.status(404);
-    res.send("not found");
+    res.status(404)
+    res.send('not found')
   }
-});
+})
 app.listen(4000, function () {
-  console.log("Listening at port 4000");
-});
+  console.log('Listening at port 4000')
+})
