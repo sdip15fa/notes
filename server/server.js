@@ -24,30 +24,18 @@ app.post("/create", body_parser.json(), async (req, res) => {
   } finally {
     await client.close()
   }
-<<<<<<< HEAD
   res.send("ok");
 }
 else {res.status(409); res.send("Syntax error.")}});
-=======
-  res.send('ok')
-})
->>>>>>> 23e62122040e5a371e9cdb9a222342a93f6be9d2
 
 app.post('/users/:i', body_parser.json(), async (req, res) => {
   const client = new MongoClient(url)
   if (req.params.i === 'signin') {
     try {
-<<<<<<< HEAD
       await client.connect();
       const database = client.db("notes");
       const users = database.collection("users");
       const pair = await users.findOne({ username: req.body.username });
-=======
-      await client.connect()
-      const database = client.db('users')
-      const users = database.collection('users')
-      const pair = await users.findOne({ username: req.body.username })
->>>>>>> 23e62122040e5a371e9cdb9a222342a93f6be9d2
       if (pair && req.body.password === pair.password) {
         const key = pair.key
         res.send(key)
@@ -69,16 +57,9 @@ app.post('/users/:i', body_parser.json(), async (req, res) => {
     }
   } else if (req.params.i === 'signup') {
     try {
-<<<<<<< HEAD
       await client.connect();
       const database = client.db("notes");
       const users = database.collection("users");
-=======
-      await client.connect()
-      const database = client.db('users')
-      const users = database.collection('users')
-      console.log(await users.find({ username: req.body.username }).count())
->>>>>>> 23e62122040e5a371e9cdb9a222342a93f6be9d2
       if ((await users.find({ username: req.body.username }).count()) > 0) {
         res.status(409)
         res.send('Username already used.')
@@ -91,7 +72,6 @@ app.post('/users/:i', body_parser.json(), async (req, res) => {
             lower: true,
             special: false
           },
-<<<<<<< HEAD
           digits: 15,
         });
         await users.insertOne(o);
@@ -100,33 +80,14 @@ app.post('/users/:i', body_parser.json(), async (req, res) => {
       await client.close();
     }
   }});
-=======
-          digits: 15
-        })
-        await users.insertOne(o)
-        res.send(o.key)
-      }
-    } finally {
-      await client.close()
-    }
-  }
-})
->>>>>>> 23e62122040e5a371e9cdb9a222342a93f6be9d2
 
 app.get('/notes/users/:user', async (req, res) => {
   const client = new MongoClient(url)
   try {
-<<<<<<< HEAD
     const key = req.params.user;
     await client.connect();
     const database = client.db("notes");
     const notes = database.collection("usernotes");
-=======
-    const key = req.params.user
-    await client.connect()
-    const database = client.db('users')
-    const notes = database.collection('notes')
->>>>>>> 23e62122040e5a371e9cdb9a222342a93f6be9d2
     if ((await notes.find({ key: key }).count()) > 0) {
       const o = await notes.findOne({ key: key })
       delete o._id
@@ -145,17 +106,10 @@ app.post('/notes/users/:user', body_parser.json(), async (req, res) => {
   const key = req.params.user
   const client = new MongoClient(url)
   try {
-<<<<<<< HEAD
     await client.connect();
     const database = client.db("notes");
     const notes = database.collection("usernotes");
     const users = database.collection("users");
-=======
-    await client.connect()
-    const database = client.db('users')
-    const notes = database.collection('notes')
-    const users = database.collection('users')
->>>>>>> 23e62122040e5a371e9cdb9a222342a93f6be9d2
     if ((await users.find({ key: key }).count()) > 0) {
       await notes.deleteMany({ key: key })
       await notes.insertOne(req.body)
