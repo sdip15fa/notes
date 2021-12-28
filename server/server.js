@@ -1,17 +1,14 @@
+require('dotenv').config();
 const { MongoClient } = require("mongodb");
 const body_parser = require("body-parser");
-const url = `mongodb+srv://${process.env.mongocred}@${process.env.mongourl}/`;
+const url = process.env.DB_URI;
 const express = require("express");
 const cors = require("cors");
 const rg = require("wcyat-rg");
 const hash = require("hash.js");
-const cf = require('node_cloudflare');
 const app = express();
 app.use(cors());
 app.options("*", cors());
-function getip(req) {
-  return (req.connection.remoteAddress ? req.connection.remoteAddress : req.remoteAddress);
-}
 app.get("/testconnection", async (req, res) => {
   res.send("ok");
 });
@@ -36,7 +33,7 @@ app.post("/users/:i", body_parser.json(), async (req, res) => {
   if (req.params.i === "signin") {
     try {
       await client.connect();
-      const database = client.db("users");
+      const database = client.db("notes");
       const users = database.collection("users");
       const pair = await users.findOne({ username: req.body.username });
       if (pair && req.body.password === pair.password) {
@@ -59,10 +56,9 @@ app.post("/users/:i", body_parser.json(), async (req, res) => {
       await client.close();
     }
   } else if (req.params.i === "signup") {
-    const ip = getip(req);
     try {
       await client.connect();
-      const database = client.db("users");
+      const database = client.db("notes");
       const users = database.collection("users");
       if ((await users.find({ username: req.body.username }).count()) > 0) {
         res.status(409);
@@ -90,8 +86,8 @@ app.get("/notes/users/:user", async (req, res) => {
   try {
     const key = req.params.user;
     await client.connect();
-    const database = client.db("users");
-    const notes = database.collection("notes");
+    const database = client.db("notes");
+    const notes = database.collection("usernotes");
     if ((await notes.find({ key: key }).count()) > 0) {
       const o = await notes.findOne({ key: key });
       delete o._id;
@@ -111,8 +107,8 @@ app.post("/notes/users/:user", body_parser.json(), async (req, res) => {
   const client = new MongoClient(url);
   try {
     await client.connect();
-    const database = client.db("users");
-    const notes = database.collection("notes");
+    const database = client.db("notes");
+    const notes = database.collection("usernotes");
     const users = database.collection("users");
     if ((await users.find({ key: key }).count()) > 0) {
       await notes.deleteMany({ key: key });
@@ -148,12 +144,6 @@ app.get("/get/:id", async (req, res) => {
     res.send("not found");
   }
 });
-cf.load(function (error, fs_error) {
-  if (fs_error)
-	{
-		throw new Error(fs_error);
-	}
-  app.listen(4000, function () {
-    console.log("Listening at port 4000");
-  });  
-})
+app.listen(4000, function () {
+  console.log("Listening at port 4000");
+});
